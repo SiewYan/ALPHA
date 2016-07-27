@@ -7,8 +7,8 @@ selection = {
     "triggerEle" : "(isMC?1:(HLT_Ele105_CaloIdVT_GsfTrkIdT_v || HLT_Ele115_CaloIdVT_GsfTrkIdT_v))",
     "triggerMuo" : "(isMC?1:(HLT_TkMu50_v||HLT_Mu50_v))",
     # Leptons
-    "singleEle" : "isWtoEN && Lepton1_pt>135 && Lepton1_isTight && V_dPhi<2 && X_dPhi>2 && MEt_pt>80", #  && nTaus==0
-    "singleMuo" : "isWtoMN && Lepton1_pt>55 && Lepton1_isHighPt && Lepton1_trkIso<0.1 && V_dPhi<2 && X_dPhi>2", # && nTaus==0
+    "singleEle" : "isWtoEN && Lepton1_pt>135 && Lepton1_isTight && V_dPhi<2 && X.dPhi>2 && MEt_pt>80", #  && nTaus==0
+    "singleMuo" : "isWtoMN && Lepton1_pt>55 && Lepton1_isHighPt && Lepton1_trkIso<0.1 && V_dPhi<2 && X.dPhi>2", # && nTaus==0
     "singleIsoLep" : "((isWtoEN && Lepton1_isElectron && Lepton1_isLoose && Lepton2_isMuon && Lepton2_isHighPt) || (isWtoMN && Lepton2_isElectron && Lepton2_isLoose && Lepton1_isMuon && Lepton1_isHighPt))",
     "doubleEle" : "isZtoEE && Lepton1_pt>135 && Lepton2_pt>35 && Lepton1_isLoose && Lepton2_isLoose", # && Lepton1_isHighPt && Lepton2_isHighPt && Lepton1_miniIso<0.1 && Lepton2_miniIso<0.1",
     "doubleMuo" : "isZtoMM && ((Lepton1_isHighPt && Lepton2_isHighPt) || (Lepton1_isTrackerHighPt && Lepton2_isHighPt) || (Lepton1_isHighPt && Lepton2_isTrackerHighPt)) && Lepton1_pt>55 && Lepton2_pt>20 && Lepton1_trkIso<0.1 && Lepton2_trkIso<0.1",
@@ -19,10 +19,10 @@ selection = {
 
     "doubleIsoEle" : "isZtoEE && Lepton1_pt>25 && Lepton2_pt>10 && Lepton1_isLoose && Lepton2_isLoose",
     "doubleIsoMuo" : "isZtoMM && ((Lepton1_isHighPt && Lepton2_isHighPt) || (Lepton1_isTrackerHighPt && Lepton2_isHighPt) || (Lepton1_isHighPt && Lepton2_isTrackerHighPt)) && Lepton1_pt>25 && Lepton2_pt>10 && Lepton1_trkIso<0.1 && Lepton2_trkIso<0.1",
-    "noLeptons" : "MEt_pt>200 && nMuons==0 && nElectrons==0 && nPhotons==0 && FatJet1_isTight && MinJetMetDPhi>0.5 && X_dPhi>2", #nTaus==0 && 
+    "noLeptons" : "MEt_pt>200 && nMuons==0 && nElectrons==0 && nPhotons==0 && FatJet1_isTight && MinJetMetDPhi>0.5 && X.dPhi>2", #nTaus==0 && 
     # V
-    "Boost" : "V_pt>200 && FatJet1_pt>200",
-    #"Boost" : "V_pt>200 && FatJet1_pt>170",
+#    "Boost" : "V_pt>200 && FatJet1_pt>200",
+    "Boost" : "V_pt>170 && FatJet1_pt>170",
     "Zcut" : "V_mass>70 && V_mass<110",
     "Topcut" : "MaxFatJetBTag>0.460",
     "TopVetocut" : "MaxFatJetBTag<0.460",
@@ -32,7 +32,7 @@ selection = {
     "LSBcut" : "FatJet1_softdropPuppiMassCorr>30 && FatJet1_softdropPuppiMassCorr<65",
     "HSBcut" : "FatJet1_softdropPuppiMassCorr>135 && FatJet1_softdropPuppiMassCorr<300",
     "HPcut" : "FatJet1_tau21<0.40",
-    "LPcut" : "FatJet1_tau21>0.40 && FatJet1_tau21>0.75",
+    "LPcut" : "FatJet1_tau21>0.40 && FatJet1_tau21<0.75",
     "1Btag" : "((FatJet1_CSV1>0.460 && FatJet1_CSV2<0.460) || (FatJet1_CSV1<0.460 && FatJet1_CSV2>0.460))",
     "2Btag" : "(FatJet1_CSV1>0.460 && FatJet1_CSV2>0.460)",
     

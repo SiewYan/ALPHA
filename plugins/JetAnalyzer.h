@@ -35,6 +35,7 @@
 
 #include "TFile.h"
 #include "TH2.h"
+#include "TF1.h"
 #include "TLorentzVector.h"
 
 class JetAnalyzer {
@@ -44,13 +45,14 @@ class JetAnalyzer {
         virtual std::vector<pat::Jet> FillJetVector(const edm::Event&);
         virtual void CorrectJet(pat::Jet&, float, float, bool);
         virtual void CorrectMass(pat::Jet&, float, float, bool);
+        virtual void CorrectPuppiMass(pat::Jet&, bool);
         virtual void CleanJetsFromMuons(std::vector<pat::Jet>&, std::vector<pat::Muon>&, float);
         virtual void CleanJetsFromElectrons(std::vector<pat::Jet>&, std::vector<pat::Electron>&, float);
         virtual void AddVariables(std::vector<pat::Jet>&, pat::MET&);
         virtual int GetNBJets(std::vector<pat::Jet>&);
         virtual pat::MET FillMetVector(const edm::Event&);
         virtual void ApplyRecoilCorrections(pat::MET&, const reco::Candidate::LorentzVector*, const reco::Candidate::LorentzVector*, int);
-        virtual float GetScaleUncertainty(pat::Jet&);
+        //virtual float GetScaleUncertainty(pat::Jet&);
         virtual float GetResolutionRatio(float);
         virtual float GetResolutionErrorUp(float);
         virtual float GetResolutionErrorDown(float);
@@ -67,13 +69,14 @@ class JetAnalyzer {
         edm::EDGetTokenT<edm::ValueMap<float>> QGToken;
         int JetId;
         float Jet1Pt, Jet2Pt, JetEta;
-        bool AddQG, RecalibrateJets, RecalibrateMass;
+        bool AddQG, RecalibrateJets, RecalibrateMass, RecalibratePuppiMass;
         std::string JECUncertaintyMC;
         std::string JECUncertaintyDATA;
         std::vector<std::string> JetCorrectorMC;
         std::vector<std::string> JetCorrectorDATA;
         std::vector<std::string> MassCorrectorMC;
         std::vector<std::string> MassCorrectorDATA;
+        std::string MassCorrectorPuppi;
         edm::EDGetTokenT<reco::VertexCollection> VertexToken;        
         edm::EDGetTokenT<double> RhoToken;
         bool UseReshape;
@@ -84,10 +87,10 @@ class JetAnalyzer {
         std::string RecoilMCFile;
         std::string RecoilDataFile;
         
-        bool isJESFile;
-        
-        TFile* JESFile;
-        TH2F* hist;
+        TFile* PuppiCorrFile;
+        TF1* PuppiJECcorr_gen;
+        TF1* PuppiJECcorr_reco_0eta1v3;
+        TF1* PuppiJECcorr_reco_1v3eta2v5;
         
         // JEC Uncertainty
         JetCorrectionUncertainty* jecUncMC;

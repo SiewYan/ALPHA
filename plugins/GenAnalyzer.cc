@@ -11,7 +11,8 @@ GenAnalyzer::GenAnalyzer(edm::ParameterSet& PSet, edm::ConsumesCollector&& CColl
     SampleWJetsToLNu(PSet.getParameter<std::vector<std::string> >("samplesWJetsToLNu")),
     SampleDir(PSet.getParameter<std::string>("samplesDir")),
     Sample(PSet.getParameter<std::string>("sample")),
-    EWKFileName(PSet.getParameter<std::string>("ewkFile"))
+    EWKFileName(PSet.getParameter<std::string>("ewkFile")),
+    ApplyEWK(PSet.getParameter<bool>("applyEWK"))
 {
     
     for(unsigned int i = 0; i < SampleDYJetsToLL.size(); i++) {
@@ -355,11 +356,13 @@ float GenAnalyzer::GetStitchWeight(std::map<std::string, float> Map) {
 
 
 float GenAnalyzer::GetZewkWeight(float zpt) {
+    if(!ApplyEWK) return 1.;
     if(zpt <= 0) return 1.;
     return fZEWK->Eval(zpt);
 }
 
 float GenAnalyzer::GetWewkWeight(float wpt) {
+    if(!ApplyEWK) return 1.;
     if(wpt <= 0) return 1.;
     return fWEWK->Eval(wpt);
 }

@@ -22,6 +22,18 @@ sample = {
         'matcheff': 1.,
         'kfactor' : 1.,
     },
+    'SingleMuonRun2016D-PromptReco-v2' : {
+        'nevents' : 98175265,
+        'xsec'    : 1.,
+        'matcheff': 1.,
+        'kfactor' : 1.,
+    },
+    'SingleMuonRun2016E-PromptReco-v2' : {
+        'nevents' : 28683764,
+        'xsec'    : 1.,
+        'matcheff': 1.,
+        'kfactor' : 1.,
+    },
     
     'DoubleMuonRun2016B-PromptReco-v1' : {
         'nevents' : 4201017,
@@ -37,6 +49,18 @@ sample = {
     },
     'DoubleMuonRun2016C-PromptReco-v2' : {
         'nevents' : 28055320,
+        'xsec'    : 1.,
+        'matcheff': 1.,
+        'kfactor' : 1.,
+    },
+    'DoubleMuonRun2016D-PromptReco-v2' : {
+        'nevents' : 33887603,
+        'xsec'    : 1.,
+        'matcheff': 1.,
+        'kfactor' : 1.,
+    },
+    'DoubleMuonRun2016E-PromptReco-v2' : {
+        'nevents' : 8637813,
         'xsec'    : 1.,
         'matcheff': 1.,
         'kfactor' : 1.,
@@ -60,6 +84,18 @@ sample = {
         'matcheff': 1.,
         'kfactor' : 1.,
     },
+    'SingleElectronRun2016D-PromptReco-v2' : {
+        'nevents' : 148167727,
+        'xsec'    : 1.,
+        'matcheff': 1.,
+        'kfactor' : 1.,
+    },
+    'SingleElectronRun2016E-PromptReco-v2' : {
+        'nevents' : 49881793,
+        'xsec'    : 1.,
+        'matcheff': 1.,
+        'kfactor' : 1.,
+    },
     
     'DoubleEGRun2016B-PromptReco-v1' : {
         'nevents' : 5704443,
@@ -79,6 +115,18 @@ sample = {
         'matcheff': 1.,
         'kfactor' : 1.,
     },
+    'DoubleEGRun2016D-PromptReco-v2' : {
+        'nevents' : 53758157,
+        'xsec'    : 1.,
+        'matcheff': 1.,
+        'kfactor' : 1.,
+    },
+    'DoubleEGRun2016E-PromptReco-v2' : {
+        'nevents' : 16338409,
+        'xsec'    : 1.,
+        'matcheff': 1.,
+        'kfactor' : 1.,
+    },
     
     'METRun2016B-PromptReco-v1' : {
         'nevents' : 602650,
@@ -94,6 +142,18 @@ sample = {
     },
     'METRun2016C-PromptReco-v2' : {
         'nevents' : 18264956,
+        'xsec'    : 1.,
+        'matcheff': 1.,
+        'kfactor' : 1.,
+    },
+    'METRun2016D-PromptReco-v2' : {
+        'nevents' : 21143821,
+        'xsec'    : 1.,
+        'matcheff': 1.,
+        'kfactor' : 1.,
+    },
+    'METRun2016E-PromptReco-v2' : {
+        'nevents' : 8480422,
         'xsec'    : 1.,
         'matcheff': 1.,
         'kfactor' : 1.,
@@ -1486,6 +1546,18 @@ samples = {
         'linewidth' : 3,
         'linestyle' : 1,
         'label' : "m_{X} = 1400 GeV",
+        'weight': 1.,
+        'plot': True,
+    },
+    'XZZ_M1600' : {
+        'order' : 1001,
+        'files' : ['BulkGravToZZToZlepZhad_narrow_M-1600_13TeV-madgraph_v14-v1'],
+        'fillcolor' : 625,
+        'fillstyle' : 3005,
+        'linecolor' : 628,
+        'linewidth' : 3,
+        'linestyle' : 1,
+        'label' : "m_{X} = 1600 GeV",
         'weight': 1.,
         'plot': True,
     },

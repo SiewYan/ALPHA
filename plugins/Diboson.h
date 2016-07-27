@@ -155,7 +155,7 @@ class Diboson : public edm::one::EDAnalyzer<edm::one::SharedResources>  {
             
         edm::Service<TFileService> fs;
         TTree* tree;
-        TTree* treealpha;
+        /*TTree* treealpha;*/
         bool isMC, isZtoEE, isZtoMM, isTtoEM, isWtoEN, isWtoMN, isZtoNN, isMerged, isResolved;
         long int EventNumber, RunNumber, LumiNumber;
         float EventWeight, StitchWeight, ZewkWeight, WewkWeight, PUWeight, TriggerWeight, LeptonWeight;
@@ -164,7 +164,7 @@ class Diboson : public edm::one::EDAnalyzer<edm::one::SharedResources>  {
         float MaxJetBTag, MaxFatJetBTag, MinJetMetDPhi, Chi2;
         // Angular
         float CosThetaStar, CosTheta1, CosTheta2, Phi, Phi1, AngularLD;
-
+        /*
         // Lepton1
         bool Lepton1_isMuon, Lepton1_isElectron, Lepton1_isLoose, Lepton1_isHighPt, Lepton1_isTrackerHighPt, Lepton1_isTight;
         float Lepton1_pt, Lepton1_trkIso;
@@ -179,8 +179,8 @@ class Diboson : public edm::one::EDAnalyzer<edm::one::SharedResources>  {
         float X_pt, X_dPhi, X_mass, X_tmass;
         // FatJet1
         bool FatJet1_isTight;
-        float FatJet1_pt, FatJet1_prunedMass, FatJet1_softdropMass, FatJet1_softdropPuppiMass, FatJet1_prunedMassCorr, FatJet1_softdropMassCorr, FatJet1_softdropPuppiMassCorr, FatJet1_tau21, FatJet1_CSV1, FatJet1_CSV2;
-         
+        float FatJet1_pt, FatJet1_prunedMass, FatJet1_softdropMass, FatJet1_softdropPuppiMass, FatJet1_prunedMassCorr, FatJet1_softdropMassCorr, FatJet1_softdropPuppiMassCorr, FatJet1_chsTau21, FatJet1_puppiTau21, FatJet1_ddtTau21, FatJet1_CSV1, FatJet1_CSV2;
+        */
         //
         std::vector<LeptonType> Electrons;
         std::vector<LeptonType> Muons;
@@ -190,10 +190,11 @@ class Diboson : public edm::one::EDAnalyzer<edm::one::SharedResources>  {
         std::vector<JetType> Jets;
         std::vector<FatJetType> FatJets;
         MEtType MEt;
-        CandidateType V, H, A, X;
+        CandidateType V, X;
+        /*CandidateType H, A;
         CandidateType HMerged, HResolved, HResolvedPt, HResolvedHpt, HResolvedDZ, HResolvedDR;
         CandidateType XMerged, XResolved, XResolvedPt, XResolvedHpt, XResolvedDZ, XResolvedDR;
-        LorentzType kH, kA;
+        LorentzType kH, kA;*/
 };
 
 #endif

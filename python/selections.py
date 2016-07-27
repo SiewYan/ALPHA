@@ -22,7 +22,7 @@ selection = {
     "noLeptons" : "MEt.pt>200 && nMuons==0 && nElectrons==0 && nPhotons==0 && FatJet1.isTight && MinJetMetDPhi>0.5 && X.dPhi>2", #nTaus==0 && 
     # V
 #    "Boost" : "V.pt>200 && FatJet1.pt>200",
-    "Boost" : "V.pt>150 && FatJet1.pt>170",
+    "Boost" : "V.pt>170 && FatJet1.pt>170",
     "Zcut" : "V.mass>70 && V.mass<110",
     "Topcut" : "MaxFatJetBTag>0.460",
     "TopVetocut" : "MaxFatJetBTag<0.460",
@@ -32,7 +32,7 @@ selection = {
     "LSBcut" : "FatJet1.softdropPuppiMassCorr>30 && FatJet1.softdropPuppiMassCorr<65",
     "HSBcut" : "FatJet1.softdropPuppiMassCorr>135 && FatJet1.softdropPuppiMassCorr<300",
     "HPcut" : "FatJet1.tau21<0.40",
-    "LPcut" : "FatJet1.tau21>0.40 && FatJet1.tau21>0.75",
+    "LPcut" : "FatJet1.tau21>0.40 && FatJet1.tau21<0.75",
     "1Btag" : "((FatJet1.CSV1>0.460 && FatJet1.CSV2<0.460) || (FatJet1.CSV1<0.460 && FatJet1.CSV2>0.460))",
     "2Btag" : "(FatJet1.CSV1>0.460 && FatJet1.CSV2>0.460)",
     

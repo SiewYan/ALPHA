@@ -19,6 +19,7 @@
 #include "DataFormats/PatCandidates/interface/MET.h"
 
 #include "TFile.h"
+#include "TH1.h"
 #include "TH2.h"
 #include "TGraphAsymmErrors.h"
 #include "TLorentzVector.h"
@@ -34,23 +35,28 @@ class MuonAnalyzer {
         virtual bool IsTrackerHighPtMuon(pat::Muon&, const reco::Vertex*);
         virtual std::vector<float> FixTrackerIsolation(pat::Muon&, pat::Muon&);
         virtual std::string GetMuon1Id(pat::Muon&);
+        virtual float GetMuonTrkSF(pat::Muon&);
+        virtual float GetMuonTrkSFError(pat::Muon&);
         virtual float GetMuonIdSF(pat::Muon&, int);
         virtual float GetMuonIdSFError(pat::Muon&, int);
         virtual float GetMuonIsoSF(pat::Muon&, int);
         virtual float GetMuonIsoSFError(pat::Muon&, int);
         virtual float GetDoubleMuonTriggerSF(pat::Muon&, pat::Muon&);
         virtual float GetDoubleMuonTriggerSFError(pat::Muon&, pat::Muon&);
-        virtual float GetMuonTriggerSFIsoMu20(pat::Muon&);
-        virtual float GetMuonTriggerSFErrorIsoMu20(pat::Muon&);
+        virtual float GetMuonTriggerSFIsoMu22(pat::Muon&);
+        virtual float GetMuonTriggerSFErrorIsoMu22(pat::Muon&);
+        virtual float GetMuonTriggerSFMu45eta2p1(pat::Muon&);
+        virtual float GetMuonTriggerSFErrorMu45eta2p1(pat::Muon&);
         virtual TH1F* ConvertTGraph(TGraphAsymmErrors*);
       
     private:
       
         edm::EDGetTokenT<std::vector<pat::Muon> > MuonToken;
         edm::EDGetTokenT<reco::VertexCollection> VertexToken;
+        std::string MuonTrkFileName;
         std::string MuonIdFileName;
         std::string MuonIsoFileName;
-        std::string MuonHighptFileName;
+        std::string MuonTrkHighptFileName;
         std::string MuonTriggerFileName;
         std::string DoubleMuonTriggerFileName;
         int Muon1Id, Muon2Id, Muon1Iso, Muon2Iso;
@@ -60,22 +66,27 @@ class MuonAnalyzer {
         
         rochcor2016 *rmcor;
         
-        bool isMuonTriggerFile, isDoubleMuonTriggerFile, isMuonIdFile, isMuonIsoFile, isMuonHighptFile;
+        bool isMuonTriggerFile, isDoubleMuonTriggerFile, isMuonTrkFile, isMuonIdFile, isMuonIsoFile, isMuonTrkHighptFile;
         
         TFile* MuonTriggerFile;
         TFile* DoubleMuonTriggerFile;
+        TFile* MuonTrkFile;
         TFile* MuonIdFile;
-        TFile* MuonHighptFile;
+        TFile* MuonTrkHighptFile;
         TFile* MuonIsoFile;
         
         TH2F* MuonTriggerLt20;
         TH2F* MuonTriggerGt20;
-        TH2F* MuonTriggerIsoMu20;
+        TH2F* MuonTriggerIsoMu22;
+        TH2F* MuonTriggerMu45eta2p1;
         
+        TGraphAsymmErrors* MuonTrkGraph;
+        TH1F* MuonTrk;
         TH2F* MuonIdLoose;
         TH2F* MuonIdMedium;
         TH2F* MuonIdTight;
         TH2F* MuonIdHighpt;
+        TH2F* MuonIdTrkHighpt;
         TH2F* MuonIsoLoose;
         TH2F* MuonIsoTight;
         TH2F* MuonIsoHighpt;

@@ -35,6 +35,9 @@ class ElectronAnalyzer {
         virtual float GetElectronIdSFError(pat::Electron&, int);
         virtual float GetElectronRecoEffSF(pat::Electron&);
         virtual float GetElectronRecoEffSFError(pat::Electron&);
+        virtual float GetElectronTriggerSFEle105(pat::Electron&);
+        virtual float GetElectronTriggerSFErrorEle105(pat::Electron&);
+        
       
     private:
       
@@ -49,6 +52,7 @@ class ElectronAnalyzer {
         edm::EDGetTokenT<edm::ValueMap<bool>> EleMVANonTrigTightIdMapToken;
         edm::EDGetTokenT<edm::ValueMap<bool>> EleMVATrigMediumIdMapToken;
         edm::EDGetTokenT<edm::ValueMap<bool>> EleMVATrigTightIdMapToken;
+        std::string EleSingleTriggerFileName;
         std::string EleVetoIdFileName;
         std::string EleLooseIdFileName;
         std::string EleMediumIdFileName;
@@ -61,9 +65,10 @@ class ElectronAnalyzer {
         float Electron1Pt, Electron2Pt;
         float EleTriggerPtMax;
         
-        bool isEleVetoIdFile, isEleLooseIdFile, isEleMediumIdFile, isEleTightIdFile, isEleMVATrigMediumIdFile, isEleMVATrigTightIdFile, isEleTriggerFile, isEleRecoEffFile;
+        bool isEleVetoIdFile, isEleLooseIdFile, isEleMediumIdFile, isEleTightIdFile, isEleMVATrigMediumIdFile, isEleMVATrigTightIdFile, isEleTriggerFile, isEleSingleTriggerFile, isEleRecoEffFile;
         
         TFile* EleTriggerFile;
+        TFile* EleSingleTriggerFile;
         TFile* EleVetoIdFile;
         TFile* EleLooseIdFile;
         TFile* EleMediumIdFile;
@@ -76,6 +81,7 @@ class ElectronAnalyzer {
         TH2F* EleTriggerDATALowLeg;
         TH2F* EleTriggerMCHighLeg;
         TH2F* EleTriggerMCLowLeg;
+        TH2F* ElectronTriggerEle105;
         TH2F* ElectronIdVeto;
         TH2F* ElectronIdLoose;
         TH2F* ElectronIdMedium;

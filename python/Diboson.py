@@ -1,3 +1,7 @@
+#FIXME JSON file here
+# New electron SF
+# Check muon SF
+
 import FWCore.ParameterSet.Config as cms
 from FWCore.ParameterSet.VarParsing import VarParsing
 import os
@@ -28,9 +32,15 @@ if len(options.inputFiles) == 0:
            #'dcap://t2-srm-02.lnl.infn.it/pnfs/lnl.infn.it/data/cms//store/data/Run2016B/DoubleEG/MINIAOD/PromptReco-v2/000/273/725/00000/72118358-B620-E611-9C76-02163E012211.root', # DoubleEle
             #'file:/lustre/cmswork/zucchett/CMSSW_8_0_5/src/GluGluToAToZhToLLBB_M300_13TeV-amcatnlo_MINIAODv2.root', # DEBUG
 #            'dcap://t2-srm-02.lnl.infn.it/pnfs/lnl.infn.it/data/cms//store/mc/RunIISpring16MiniAODv2/WJetsToLNu_HT-1200To2500_TuneCUETP8M1_13TeV-madgraphMLM-pythia8/MINIAODSIM/PUSpring16_80X_mcRun2_asymptotic_2016_miniAODv2_v0_ext1-v1/10000/AC51B7C5-7829-E611-AF89-6CC2173DA9E0.root', #DEBUG
+<<<<<<< HEAD
             'root://cmsxrootd.fnal.gov//store/mc/RunIISpring16MiniAODv2/WJetsToLNu_HT-1200To2500_TuneCUETP8M1_13TeV-madgraphMLM-pythia8/MINIAODSIM/PUSpring16_80X_mcRun2_asymptotic_2016_miniAODv2_v0_ext1-v1/10000/AC51B7C5-7829-E611-AF89-6CC2173DA9E0.root'
            #'dcap://t2-srm-02.lnl.infn.it/pnfs/lnl.infn.it/data/cms//store/data/Run2016B/SingleMuon/MINIAOD/PromptReco-v2/000/275/001/00000/E8366493-E034-E611-8A7E-02163E0146AE.root',
 #            'dcap://t2-srm-02.lnl.infn.it/pnfs/lnl.infn.it/data/cms//store/data/Run2016B/SingleMuon/MINIAOD/PromptReco-v2/000/275/067/00000/C08E7539-AE34-E611-9C9A-02163E011A43.root',
+=======
+
+           'dcap://t2-srm-02.lnl.infn.it/pnfs/lnl.infn.it/data/cms//store/data/Run2016B/SingleMuon/MINIAOD/PromptReco-v2/000/275/001/00000/E8366493-E034-E611-8A7E-02163E0146AE.root',
+           #'dcap://t2-srm-02.lnl.infn.it/pnfs/lnl.infn.it/data/cms//store/data/Run2016B/SingleMuon/MINIAOD/PromptReco-v2/000/275/067/00000/C08E7539-AE34-E611-9C9A-02163E011A43.root',
+>>>>>>> b9ca93602dec052abf43edc5e5b35a6e8139eef5
 
 
         )
@@ -62,7 +72,8 @@ if isReHLT: print '-> re-HLT sample'
 import FWCore.PythonUtilities.LumiList as LumiList
 if isData:
     #process.source.lumisToProcess = LumiList.LumiList(filename = '%s/src/Analysis/ALPHA/data/JSON/Cert_271036-275125_13TeV_PromptReco_Collisions16_JSON.txt' % os.environ['CMSSW_BASE']).getVLuminosityBlockRange() #4.34
-    process.source.lumisToProcess = LumiList.LumiList(filename = '%s/src/Analysis/ALPHA/data/JSON/Cert_271036-275783_13TeV_PromptReco_Collisions16_JSON.txt' % os.environ['CMSSW_BASE']).getVLuminosityBlockRange() #6.26
+    #process.source.lumisToProcess = LumiList.LumiList(filename = '%s/src/Analysis/ALPHA/data/JSON/Cert_271036-275783_13TeV_PromptReco_Collisions16_JSON.txt' % os.environ['CMSSW_BASE']).getVLuminosityBlockRange() #6.26
+    process.source.lumisToProcess = LumiList.LumiList(filename = '%s/src/Analysis/ALPHA/data/JSON/Cert_271036-276811_13TeV_PromptReco_Collisions16_JSON_NoL1T.txt' % os.environ['CMSSW_BASE']).getVLuminosityBlockRange() #12.9
 
 
 process.counter = cms.EDAnalyzer('CounterAnalyzer',
@@ -272,6 +283,7 @@ process.ntuple = cms.EDAnalyzer('Diboson',
         samplesDir = cms.string('%s/src/Analysis/ALPHA/data/Stitch/' % os.environ['CMSSW_BASE']),
         sample = cms.string( sample ),
         ewkFile = cms.string('%s/src/Analysis/ALPHA/data/scalefactors_v4.root' % os.environ['CMSSW_BASE']),
+        applyEWK = cms.bool(True if sample.startswith('DYJets') or sample.startswith('WJets') else False),
     ),
     pileupSet = cms.PSet(
         pileup = cms.InputTag('slimmedAddPileupInfo'),
@@ -299,6 +311,7 @@ process.ntuple = cms.EDAnalyzer('Diboson',
         eleMVANonTrigTightIdMap = cms.InputTag('egmGsfElectronIDs:mvaEleID-Spring15-25ns-nonTrig-V1-wp80'),
         eleMVATrigMediumIdMap = cms.InputTag('egmGsfElectronIDs:mvaEleID-Spring15-25ns-Trig-V1-wp90'),
         eleMVATrigTightIdMap = cms.InputTag('egmGsfElectronIDs:mvaEleID-Spring15-25ns-Trig-V1-wp80'),
+        eleSingleTriggerFileName = cms.string('%s/src/Analysis/ALPHA/data/SingleEleTriggerEff.root' % os.environ['CMSSW_BASE']),
         eleVetoIdFileName = cms.string('%s/src/Analysis/ALPHA/data/runB_p2_passingVeto_egammaEffi_txt_SF2D.root' % os.environ['CMSSW_BASE']),
         eleLooseIdFileName = cms.string('%s/src/Analysis/ALPHA/data/runB_p2_passingLoose_egammaEffi_txt_SF2D.root' % os.environ['CMSSW_BASE']),
         eleMediumIdFileName = cms.string('%s/src/Analysis/ALPHA/data/runB_p2_passingMedium_egammaEffi_txt_SF2D.root' % os.environ['CMSSW_BASE']),
@@ -309,25 +322,25 @@ process.ntuple = cms.EDAnalyzer('Diboson',
         electron1id = cms.int32(1), # 0: veto, 1: loose, 2: medium, 3: tight, 4: HEEP, 5: MVA medium nonTrig, 6: MVA tight nonTrig, 7: MVA medium Trig, 8: MVA tight Trig
         electron2id = cms.int32(1),
         electron1pt = cms.double(20.),
-        electron2pt = cms.double(10.),
+        electron2pt = cms.double(20.),
     ),
     muonSet = cms.PSet(
         muons = cms.InputTag('cleanedMuons'),#('slimmedMuons'),
         vertices = cms.InputTag('offlineSlimmedPrimaryVertices'),
-        muonIdFileName = cms.string('%s/src/Analysis/ALPHA/data/MuonID_Z_RunCD_Reco76X_Feb15.root' % os.environ['CMSSW_BASE']),
-        #muonIsoFileName = cms.string('%s/src/Analysis/ALPHA/data/MuonIso_Z_RunCD_Reco76X_Feb15.root' % os.environ['CMSSW_BASE']),
-        muonIsoFileName = cms.string('%s/src/Analysis/ALPHA/data/MuonISO_Z_2016runB_2p6fb.root' % os.environ['CMSSW_BASE']),
-        muonHighptFileName = cms.string('%s/src/Analysis/ALPHA/data/MuonHighPt_Z_RunCD_Reco74X_Dec17.root' % os.environ['CMSSW_BASE']),
-        muonTriggerFileName = cms.string('%s/src/Analysis/ALPHA/data/SingleMuonTrigger_Z_RunCD_Reco76X_Feb15.root' % os.environ['CMSSW_BASE']),
+        muonTrkFileName = cms.string('%s/src/Analysis/ALPHA/data/TrkEff.root' % os.environ['CMSSW_BASE']),
+        muonIdFileName = cms.string('%s/src/Analysis/ALPHA/data/MuonID_Z_RunBCD_prompt80X_7p65.root' % os.environ['CMSSW_BASE']),
+        muonIsoFileName = cms.string('%s/src/Analysis/ALPHA/data/MuonIso_Z_RunBCD_prompt80X_7p65.root' % os.environ['CMSSW_BASE']),
+        muonTrkHighptFileName = cms.string('%s/src/Analysis/ALPHA/data/trackHighPtID_effSF_80X.root' % os.environ['CMSSW_BASE']),
+        muonTriggerFileName = cms.string('%s/src/Analysis/ALPHA/data/SingleMuonTrigger_Z_RunBCD_prompt80X_7p65.root' % os.environ['CMSSW_BASE']),
         doubleMuonTriggerFileName = cms.string('%s/src/Analysis/ALPHA/data/MuHLTEfficiencies_Run_2012ABCD_53X_DR03-2.root' % os.environ['CMSSW_BASE']),#obsolete
         muon1id = cms.int32(0), # 0: tracker high pt muon id, 1: loose, 2: medium, 3: tight, 4: high pt
         muon2id = cms.int32(0),
         muon1iso = cms.int32(0), # 0: trk iso (<0.1), 1: loose (<0.25), 2: tight (<0.15) (pfIso in cone 0.4)
         muon2iso = cms.int32(0),
         muon1pt = cms.double(20.),
-        muon2pt = cms.double(10.),
+        muon2pt = cms.double(20.),
         useTuneP = cms.bool(True),
-        doRochester = cms.bool(True),
+        doRochester = cms.bool(False),
     ),
     tauSet = cms.PSet(
         taus = cms.InputTag('slimmedTaus'),
@@ -363,6 +376,7 @@ process.ntuple = cms.EDAnalyzer('Diboson',
         addQGdiscriminator = cms.bool(True),
         recalibrateJets = cms.bool(True),
         recalibrateMass = cms.bool(False),
+        recalibratePuppiMass = cms.bool(False),
         vertices = cms.InputTag('offlineSlimmedPrimaryVertices'),
         rho = cms.InputTag('fixedGridRhoFastjetAll'),        
         jecUncertaintyDATA = cms.string('%s/src/Analysis/ALPHA/data/Spring16_25nsV6_DATA/Spring16_25nsV6_DATA_Uncertainty_AK4PFchs.txt' % os.environ['CMSSW_BASE']),
@@ -387,6 +401,7 @@ process.ntuple = cms.EDAnalyzer('Diboson',
             '%s/src/Analysis/ALPHA/data/Spring16_25nsV6_MC/Spring16_25nsV6_MC_L2Relative_AK4PFchs.txt' % os.environ['CMSSW_BASE'],
             '%s/src/Analysis/ALPHA/data/Spring16_25nsV6_MC/Spring16_25nsV6_MC_L3Absolute_AK4PFchs.txt' % os.environ['CMSSW_BASE'],
         ),
+        massCorrectorPuppi = cms.string('%s/src/Analysis/ALPHA/data/puppiJecCorr.root' % os.environ['CMSSW_BASE']),
         reshapeBTag = cms.bool(True),
         btag = cms.string('pfCombinedInclusiveSecondaryVertexV2BJetTags'),
         btagDB = cms.string('%s/src/Analysis/ALPHA/data/CSVv2.csv' % os.environ['CMSSW_BASE']),
@@ -406,6 +421,7 @@ process.ntuple = cms.EDAnalyzer('Diboson',
         addQGdiscriminator = cms.bool(True),
         recalibrateJets = cms.bool(True),
         recalibrateMass = cms.bool(True),
+        recalibratePuppiMass = cms.bool(True),
         vertices = cms.InputTag('offlineSlimmedPrimaryVertices'),
         rho = cms.InputTag('fixedGridRhoFastjetAll'),        
         jecUncertaintyDATA = cms.string('%s/src/Analysis/ALPHA/data/Spring16_25nsV6_DATA/Spring16_25nsV6_DATA_Uncertainty_AK8PFPuppi.txt' % os.environ['CMSSW_BASE']),
@@ -430,6 +446,7 @@ process.ntuple = cms.EDAnalyzer('Diboson',
             '%s/src/Analysis/ALPHA/data/Spring16_25nsV6_MC/Spring16_25nsV6_MC_L2Relative_AK8PFchs.txt' % os.environ['CMSSW_BASE'],
             '%s/src/Analysis/ALPHA/data/Spring16_25nsV6_MC/Spring16_25nsV6_MC_L3Absolute_AK8PFchs.txt' % os.environ['CMSSW_BASE'],
         ),
+        massCorrectorPuppi = cms.string('%s/src/Analysis/ALPHA/data/puppiJecCorr.root' % os.environ['CMSSW_BASE']),
         reshapeBTag = cms.bool(True),
         btag = cms.string('pfCombinedInclusiveSecondaryVertexV2BJetTags'),
         btagDB = cms.string('%s/src/Analysis/ALPHA/data/CSVv2.csv' % os.environ['CMSSW_BASE']),
@@ -445,7 +462,7 @@ process.ntuple = cms.EDAnalyzer('Diboson',
     writeNLeptons = cms.int32(2),
     writeNTaus = cms.int32(0),
     writeNPhotons = cms.int32(0),
-    writeNJets = cms.int32(2),
+    writeNJets = cms.int32(0),
     writeNFatJets = cms.int32(1),
     histFile = cms.string('%s/src/Analysis/ALPHA/data/HistList.dat' % os.environ['CMSSW_BASE']),
     verbose  = cms.bool(False),
@@ -464,7 +481,7 @@ process.ntuple = cms.EDAnalyzer('Diboson',
 if isData:
     process.seq = cms.Sequence(
         process.counter *
-        process.HLTFilter *
+        #process.HLTFilter *
 
         process.METFilter *
         process.BadPFMuonFilter *
@@ -475,7 +492,7 @@ if isData:
         process.calibratedPatElectrons *
         process.egmPhotonIDSequence *
         process.cleanedMuons *
-        process.ak4PFL2L3ResidualCorrectorChain *
+        #process.ak4PFL2L3ResidualCorrectorChain *
         process.QGTagger *
         process.ntuple
     )
@@ -491,7 +508,7 @@ else:
         process.calibratedPatElectrons *
         process.egmPhotonIDSequence *
         process.cleanedMuons *
-        process.ak4PFL2L3ResidualCorrectorChain *
+        #process.ak4PFL2L3ResidualCorrectorChain *
         process.QGTagger *
         process.ntuple
     )

@@ -14,6 +14,7 @@ ElectronAnalyzer::ElectronAnalyzer(const edm::ParameterSet& PSet, edm::ConsumesC
     EleMVANonTrigTightIdMapToken(CColl.consumes<edm::ValueMap<bool>>(PSet.getParameter<edm::InputTag>("eleMVANonTrigTightIdMap"))),
     EleMVATrigMediumIdMapToken(CColl.consumes<edm::ValueMap<bool>>(PSet.getParameter<edm::InputTag>("eleMVATrigMediumIdMap"))),
     EleMVATrigTightIdMapToken(CColl.consumes<edm::ValueMap<bool>>(PSet.getParameter<edm::InputTag>("eleMVATrigTightIdMap"))),
+    EleSingleTriggerFileName(PSet.getParameter<std::string>("eleSingleTriggerFileName")),
     EleVetoIdFileName(PSet.getParameter<std::string>("eleVetoIdFileName")),
     EleLooseIdFileName(PSet.getParameter<std::string>("eleLooseIdFileName")),
     EleMediumIdFileName(PSet.getParameter<std::string>("eleMediumIdFileName")),
@@ -28,7 +29,7 @@ ElectronAnalyzer::ElectronAnalyzer(const edm::ParameterSet& PSet, edm::ConsumesC
     Electron1Pt(PSet.getParameter<double>("electron1pt")),
     Electron2Pt(PSet.getParameter<double>("electron2pt"))
 {
-    isEleVetoIdFile = isEleLooseIdFile = isEleMediumIdFile = isEleTightIdFile = isEleRecoEffFile = isEleMVATrigMediumIdFile = isEleMVATrigTightIdFile = isEleTriggerFile = false;
+    isEleVetoIdFile = isEleLooseIdFile = isEleMediumIdFile = isEleTightIdFile = isEleRecoEffFile = isEleMVATrigMediumIdFile = isEleMVATrigTightIdFile = isEleTriggerFile = isEleSingleTriggerFile = false;
     
     // AN-13-022, obsolete!!
     // Electron trigger, obsolete!!!
@@ -42,6 +43,17 @@ ElectronAnalyzer::ElectronAnalyzer(const edm::ParameterSet& PSet, edm::ConsumesC
 //    }
 //    else std::cout << " - ElectronAnalyzer Warning: No EleTrigger Weight File" << std::endl;
     
+
+    // Electron SingleTrigger
+    EleSingleTriggerFile=new TFile(EleSingleTriggerFileName.c_str(), "READ");
+    if(!EleSingleTriggerFile->IsZombie()) {
+      ElectronTriggerEle105=(TH2F*)EleSingleTriggerFile->Get("probe_Ele_pt_probe_Ele_eta_PLOT_passingLoose_pass");
+      isEleSingleTriggerFile=true;
+    }
+    else {
+      throw cms::Exception("ElectronAnalyzer", "No SingleTrigger File");
+      return;
+    }
 
     // Electron reco SF 2015-2016
     EleRecoEffFile=new TFile(EleRecoEffFileName.c_str(), "READ");
@@ -129,7 +141,7 @@ ElectronAnalyzer::ElectronAnalyzer(const edm::ParameterSet& PSet, edm::ConsumesC
 }
 
 ElectronAnalyzer::~ElectronAnalyzer() {
-//    EleTriggerFile->Close();
+    EleSingleTriggerFile->Close();
     EleVetoIdFile->Close();
     EleLooseIdFile->Close();
     EleMediumIdFile->Close();
@@ -352,6 +364,29 @@ float ElectronAnalyzer::GetElectronRecoEffSFError(pat::Electron& el) {
     double pt = std::min( std::max( ElectronRecoEff->GetYaxis()->GetXmin(), el.pt() ) , ElectronRecoEff->GetYaxis()->GetXmax() - 0.000001 );
     double abseta = std::min( ElectronRecoEff->GetXaxis()->GetXmax() - 0.000001 , fabs(el.eta()) );
     return ElectronRecoEff->GetBinError(ElectronRecoEff->FindBin(abseta, pt));
+}
+
+float ElectronAnalyzer::GetElectronTriggerSFEle105(pat::Electron& ele) {
+    if(!isEleSingleTriggerFile) return 1.;
+    double pt = std::min( std::max( ElectronTriggerEle105->GetXaxis()->GetXmin(), ele.pt() ) , ElectronTriggerEle105->GetXaxis()->GetXmax() - 0.000001 );
+    double eta = 0.;
+    if (ele.eta() > 0)
+        eta = std::min( ElectronTriggerEle105->GetYaxis()->GetXmax() - 0.000001 , ele.eta() );
+    else
+        eta = std::max( ElectronTriggerEle105->GetYaxis()->GetXmin() + 0.000001 , ele.eta() );
+    
+    return ElectronTriggerEle105->GetBinContent( ElectronTriggerEle105->FindBin(pt, eta) );
+}
+
+float ElectronAnalyzer::GetElectronTriggerSFErrorEle105(pat::Electron& ele) {
+    if(!isEleSingleTriggerFile) return 1.;
+    double pt = std::min( std::max( ElectronTriggerEle105->GetXaxis()->GetXmin(), ele.pt() ) , ElectronTriggerEle105->GetXaxis()->GetXmax() - 0.000001 );
+    double eta = 0.;
+    if (ele.eta() > 0)
+        eta = std::min( ElectronTriggerEle105->GetYaxis()->GetXmax() - 0.000001 , ele.eta() );
+    else
+        eta = std::max( ElectronTriggerEle105->GetYaxis()->GetXmin() + 0.000001 , ele.eta() );
+    return ElectronTriggerEle105->GetBinError( ElectronTriggerEle105->FindBin(pt, eta) );
 }
 
 /*

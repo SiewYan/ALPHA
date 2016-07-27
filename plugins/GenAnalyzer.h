@@ -60,6 +60,8 @@ class GenAnalyzer {
         std::map<std::string, TH1F*> hPtV;
         
         std::string EWKFileName;
+        bool ApplyEWK;
+        
         TFile* EWKFile;
         TF1* fZEWK;
         TF1* fWEWK;
