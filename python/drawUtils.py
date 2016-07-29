@@ -14,7 +14,8 @@ from Analysis.ALPHA.samples import samples
 
 gStyle.SetOptStat(0)
 
-    
+histDir = {"a_" : "All", "g_" : "Gen", "e_" : "Electrons", "m_" : "Muons", "t_" : "Taus", "p_" : "Photons", "j_" : "Jets", "k_" : "Kin"}
+
 ##################
 #    PROJECT     #
 ##################
@@ -25,8 +26,6 @@ def project(var, cut, weight, samplelist, pd, ntupledir):
     tree = {}
     chain = {}
     hist = {}
-    
-    histDir = {"a_" : "All", "g_" : "Gen", "e_" : "Electrons", "m_" : "Muons", "t_" : "Taus", "p_" : "Photons", "j_" : "Jets", "k_" : "Kin"}
     
     ### Create and fill MC histograms ###
     for i, s in enumerate(samplelist):
@@ -379,7 +378,7 @@ def drawCMS(lumi, text, onTop=False):
     latex.SetTextColor(1)
     latex.SetTextFont(42)
     latex.SetTextAlign(33)
-    if (type(lumi) is float or type(lumi) is int) and float(lumi) > 0: latex.DrawLatex(0.95, 0.985, "%.2f fb^{-1}  (13 TeV)" % (float(lumi)/1000.))
+    if (type(lumi) is float or type(lumi) is int) and float(lumi) > 0: latex.DrawLatex(0.95, 0.985, "%.1f fb^{-1}  (13 TeV)" % (float(lumi)/1000.))
     elif type(lumi) is str: latex.DrawLatex(0.95, 0.985, "%s fb^{-1}  (13 TeV)" % lumi)
     if not onTop: latex.SetTextAlign(11)
     latex.SetTextFont(62)
@@ -484,3 +483,13 @@ def drawMass(m):
     latex.SetTextAlign(22)
     latex.SetTextSize(0.04)
     latex.DrawLatex(0.75, 0.85, "m_{X} = %.0f GeV" % m)
+
+def drawModel(m):
+    if m=="XZZ": spin = "spin-2 signal (Bulk)"
+    if m=="XWZ": spin = "spin-1 signal (W')"
+    latex = TLatex()
+    latex.SetNDC()
+    latex.SetTextColor(1)
+    latex.SetTextFont(72)
+    latex.SetTextSize(0.035)
+    latex.DrawLatex(0.15, 0.68, spin)

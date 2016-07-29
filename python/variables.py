@@ -554,21 +554,28 @@ var_template = {
       "log" : False,
     },
     "FatJet[N].softdropPuppiMass": {
-      "title" : "jet PUPPI soft drop mass (GeV)",
+      "title" : "jet soft drop puppi mass (GeV)",
+      "nbins" : 60,
+      "min" : 0,
+      "max" : 300,
+      "log" : False,
+    },
+    "FatJet[N]_softdropPuppiMass": {
+      "title" : "jet soft drop puppi mass (GeV)",
       "nbins" : 60,
       "min" : 0,
       "max" : 300,
       "log" : False,
     },
     "FatJet[N].softdropPuppiMassCorr": {
-      "title" : "jet PUPPI soft drop mass (GeV)",
+      "title" : "jet soft drop puppi mass corrected (GeV)",
       "nbins" : 60,
       "min" : 0,
       "max" : 300,
       "log" : False,
     },
     "FatJet[N]_softdropPuppiMassCorr": {
-      "title" : "jet PUPPI soft drop mass (GeV)",
+      "title" : "jet soft drop puppi mass corrected (GeV)",
       "nbins" : 60,
       "min" : 0,
       "max" : 300,
@@ -588,9 +595,23 @@ var_template = {
       "max" : 3.15,
       "log" : False,
     },
-    "FatJet[N].tau21": {
+    "FatJet[N].chsTau21": {
       "title" : "#tau_{2} / #tau_{1}",
-      "nbins" : 25,
+      "nbins" : 10,
+      "min" : 0,
+      "max" : 1.,
+      "log" : False,
+    },
+    "FatJet[N].puppiTau21": {
+      "title" : "#tau_{2} / #tau_{1}",
+      "nbins" : 10,
+      "min" : 0,
+      "max" : 1.,
+      "log" : False,
+    },
+    "FatJet[N].ddtTau21": {
+      "title" : "#tau_{2} / #tau_{1}",
+      "nbins" : 10,
       "min" : 0,
       "max" : 1.,
       "log" : False,
@@ -843,29 +864,43 @@ var_template = {
       "max" : 0.1,
       "log" : True,
     },
-    "Lepton[N].looseId": {
+    "Lepton[N].isVeto": {
+      "title" : "veto Id",
+      "nbins" : 2,
+      "min" : -0.5,
+      "max" : 1.5,
+      "log" : False,
+    },
+    "Lepton[N].isLoose": {
       "title" : "loose Id",
       "nbins" : 2,
       "min" : -0.5,
       "max" : 1.5,
       "log" : False,
     },
-    "Lepton[N].mediumId": {
+    "Lepton[N].isMedium": {
       "title" : "medium Id",
       "nbins" : 2,
       "min" : -0.5,
       "max" : 1.5,
       "log" : False,
     },
-    "Lepton[N].tightId": {
+    "Lepton[N].isTight": {
       "title" : "tight Id",
       "nbins" : 2,
       "min" : -0.5,
       "max" : 1.5,
       "log" : False,
     },
-    "Lepton[N].highptId": {
+    "Lepton[N].isHighPt": {
       "title" : "high pT Id",
+      "nbins" : 2,
+      "min" : -0.5,
+      "max" : 1.5,
+      "log" : False,
+    },
+    "Lepton[N].isTrackerHighPt": {
+      "title" : "tracker high pT Id",
       "nbins" : 2,
       "min" : -0.5,
       "max" : 1.5,
@@ -1174,3 +1209,6 @@ variable['Jet2.pt']['max'] = 400
 variable['Jet3.pt']['max'] = 200
 variable['Jet4.pt']['max'] = 200
 variable['Lepton2.pt']['max'] = 250
+
+# For treealpha
+#for n, v in var_template.iteritems(): variable[n.replace('.', '_')] = v.copy()
