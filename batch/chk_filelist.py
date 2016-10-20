@@ -4,7 +4,7 @@ import commands
 import math, time
 import sys
 import importlib
-from Analysis.ALPHA.samples_bb import sample
+from Analysis.ALPHA.samples import sample
 
 import optparse
 usage = 'usage: %prog [options]'
