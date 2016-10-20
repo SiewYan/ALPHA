@@ -447,6 +447,12 @@ sample = {
         'matcheff': 1.,
         'kfactor' : 1.004,#8.74/12.8,
     },
+    'WJetsToLNu_HT-600To800_TuneCUETP8M1_13TeV-madgraphMLM-pythia8_ext1-v1' : {
+        'nevents' : 14410862,
+        'xsec'    : 12.8,
+        'matcheff': 1.,
+        'kfactor' : 1.004,#8.74/12.8,
+    },
 #    'WJetsToLNu_HT-800To1200_TuneCUETP8M1_13TeV-madgraphMLM-pythia8-v1' : {
 #        'nevents' : 1.,
 #        'xsec'    : 5.261,
@@ -481,6 +487,12 @@ sample = {
         'xsec'    : 0.03089,
         'matcheff': 1.,
         'kfactor' : 1.004,#0.01816/0.03089,
+    },
+    'WJetsToLNu_HT-2500ToInf_TuneCUETP8M1_13TeV-madgraphMLM-pythia8_ext1-v1' : {
+        'nevents' : 2254248,
+        'xsec'    : 0.03089,
+        'matcheff': 1.,
+        'kfactor' : 1.004,#0.01816/0.03089,  
     },
     'WJetsToQQ_HT-600ToInf_TuneCUETP8M1_13TeV-madgraphMLM-pythia8_v0-v1' : { # currently with xrootd
         'nevents' : 1025005,
