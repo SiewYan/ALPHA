@@ -399,8 +399,8 @@ Dibottom::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup)
   Hist["a_PrenEvents"]->Fill(4., EventWeight); //jetcut1
 
   //tauIdByMuonRejection->loose; photonid->loose; //move to offline cut******
-  if ( nTaus > 0 ) {if (Verbose) std::cout<<"EXIT :nTaus>0"<<std::endl; return;}
-  if ( nPhotons > 0 ) {if (Verbose) std::cout<<"EXIT :nPhotons>0"<<std::endl; return;}
+  //if ( nTaus > 0 ) {if (Verbose) std::cout<<"EXIT :nTaus>0"<<std::endl; return;}
+  //if ( nPhotons > 0 ) {if (Verbose) std::cout<<"EXIT :nPhotons>0"<<std::endl; return;}
 
   //Tight electron/muon selection
   for ( unsigned int m = 0; m < MuonVect.size() ; m++){
