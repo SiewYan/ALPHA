@@ -390,12 +390,19 @@ Dibottom::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup)
   if (JetsVect.size() > 4){if (Verbose) std::cout<<"EXIT :jet.size>4"<<std::endl; return;}
 
   Hist["a_PrenEvents"]->Fill(3., EventWeight);
-
+  
   for (unsigned int j = 0; j < JetsVect.size(); j++){
-    if(JetsVect.at(j).pt() < 20.){if (Verbose) std::cout<<"EXIT :jets "<<j<<" pt < 20 GeV"<<std::endl;return;}
-    if(abs(JetsVect.at(j).eta()) > 2.5){if (Verbose) std::cout<<"EXIT :jets "<<j<<" eta > 2.5"<<std::endl;return;}
-  }
 
+    if(j==0){
+      if(JetsVect.at(j).pt() < 50.){if (Verbose) std::cout<<"EXIT :jets "<<j<<" pt < 50 GeV"<<std::endl;return;}
+      if(abs(JetsVect.at(j).eta()) > 2.5){if (Verbose) std::cout<<"EXIT :jets "<<j<<" eta > 2.5"<<std::endl;return;}
+    }
+    else{
+      if(JetsVect.at(j).pt() < 20.){if (Verbose) std::cout<<"EXIT :jets "<<j<<" pt < 20 GeV"<<std::endl;return;}
+      if(abs(JetsVect.at(j).eta()) > 2.5){if (Verbose) std::cout<<"EXIT :jets "<<j<<" eta > 2.5"<<std::endl;return;}
+    }
+  }
+  
   Hist["a_PrenEvents"]->Fill(4., EventWeight); //jetcut1
 
   //tauIdByMuonRejection->loose; photonid->loose; //move to offline cut******
@@ -569,18 +576,13 @@ Dibottom::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup)
 	std::cout<<"The Calculated Zmass = "<<mZmass<<std::endl;
       }
       
-      if(mZmass > 70. && mZmass < 110. && mZpt > maxZpt){
-	theV.addDaughter(TightMuonVect.at(0));
-	theV.addDaughter(TightMuonVect.at(1));
-	addP4.set(theV);
-	isZCR=true;
+      if(mZmass > 70. && mZmass < 110. && mZpt > maxZpt){if(Verbose) std::cout<<"Its a Z Control Region"<<std::endl; isZCR=true;}
 
-	if (Verbose){
-	  std::cout<<"Its a Z Control Region"<<std::endl;
-	  std::cout<<"The Reconstructed V mass = "<<theV.mass()<<std::endl;
-        }
+      theV.addDaughter(TightMuonVect.at(0));
+      theV.addDaughter(TightMuonVect.at(1));
+      addP4.set(theV);
 
-      }
+      if (Verbose){std::cout<<"The Reconstructed V mass = "<<theV.mass()<<std::endl;}
       
       Fakemet= fk;
       Zpt = mZpt;
@@ -626,19 +628,14 @@ Dibottom::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup)
 	std::cout<<"The Calculated Zmass = "<<mZmass<<std::endl;
       }
 
-      if(mZmass > 70. && mZmass < 110. && mZpt > maxZpt){
-        theV.addDaughter(TightElecVect.at(0));
-        theV.addDaughter(TightElecVect.at(1));
-        addP4.set(theV);
-        isZCR=true;
-
-	if (Verbose){
-	  std::cout<<"Its a Z Control Region"<<std::endl;
-	  std::cout<<"The Reconstructed V mass = "<<theV.mass()<<std::endl;
-	}
-
-      }
-
+      if(mZmass > 70. && mZmass < 110. && mZpt > maxZpt){if(Verbose) std::cout<<"Its a Z Control Region"<<std::endl;isZCR=true;}
+      
+      theV.addDaughter(TightElecVect.at(0));
+      theV.addDaughter(TightElecVect.at(1));
+      addP4.set(theV);
+      
+      if (Verbose){std::cout<<"The Reconstructed V mass = "<<theV.mass()<<std::endl;}
+      
       Fakemet= fk;
       Zpt = mZpt;
       Zmass = mZmass;
@@ -726,21 +723,15 @@ Dibottom::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup)
     }
     
     //question, should we save it??
-    if(W_mT > 50. && W_mT < 160. ){
-      theV.addDaughter(TightMuonVect.at(0));
-      theV.addDaughter(MET);
-      addP4.set(theV);
-      isWCR=true;
-
-      if (Verbose){
-	std::cout<<"The Reconstructed V mass = "<<theV.mass()<<std::endl;
-      }
-
-      Fakemet= fk;
-      Wmass = W_mT;
-      nPVW = thePileupAnalyzer->GetPV(iEvent);
-
-    }
+    if(W_mT > 50. && W_mT < 160. ){isWCR=true;}
+    
+    theV.addDaughter(TightMuonVect.at(0));
+    theV.addDaughter(MET);
+    addP4.set(theV);
+    
+    Fakemet= fk;
+    Wmass = W_mT;
+    nPVW = thePileupAnalyzer->GetPV(iEvent);
     
     // SF
     if(isMC) {
@@ -748,7 +739,7 @@ Dibottom::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup)
       //ADD TRIGGER SF
       LeptonWeight *= theMuonAnalyzer->GetMuonTriggerSFMu45eta2p1(TightMuonVect.at(0)); 
       LeptonWeight *= theMuonAnalyzer->GetMuonTriggerSFIsoMu22(TightMuonVect.at(0)); //added
-
+      
       LeptonWeight *= theMuonAnalyzer->GetMuonTrkSF(TightMuonVect.at(0));
       
       //0: tracker high pt muon id, 1: loose, 2: medium, 3: tight, 4: high pt                                                                               
@@ -772,14 +763,12 @@ Dibottom::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup)
       std::cout<<"The Calculated W Transverse Mass = "<<W_mT<<std::endl;
     }
     
-    if(W_mT > 50. && W_mT < 160. ){
+    if(W_mT > 50. && W_mT < 160. ){isWCR=true;}
       
-      theV.addDaughter(TightElecVect.at(0));
-      theV.addDaughter(MET);
-      addP4.set(theV);
-      isWCR=true;
-    }
-
+    theV.addDaughter(TightElecVect.at(0));
+    theV.addDaughter(MET);
+    addP4.set(theV);
+    
     Fakemet= fk;
     nPVZ = thePileupAnalyzer->GetPV(iEvent);
     Wmass = W_mT;
@@ -907,6 +896,14 @@ Dibottom::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup)
   if ( (isZtoEE || isZtoMM) && isZCR ) ZCR_counter++;
   if ( (isWtoEN || isWtoMN) && isWCR ) WCR_counter++;
   if ( isTtoEM && isTCR ) TCR_counter++;
+
+  //checking overlapping of flag state
+  if (isSR && isZtoNN){if(isZtoEE || isZtoMM || isWtoEN || isWtoMN || isTtoEM) if(Verbose)std::cout<<"EXIT = TROUBLE, SR overlap with CR"<<std::endl;}
+  if (isWtoEN && isWtoMN){if(Verbose)std::cout<<"WCR conflict"<<std::endl;}
+  if (isZtoEE && isZtoMM){if(Verbose)std::cout<<"ZCR conflict"<<std::endl;}
+  if ( (isWtoEN || isWtoMN) && (isZtoEE || isZtoMM) ){if(Verbose)std::cout<<"WCR and ZCR overlap"<<std::endl;}
+  if ( ( (isZtoEE || isZtoMM) || (isWtoEN || isWtoMN) ) && isTCR ){if(Verbose)std::cout<<"WCR and ZCR overlap TCR"<<std::endl;}
+
   
   if (Verbose){
 
