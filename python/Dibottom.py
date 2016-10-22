@@ -14,7 +14,7 @@ process = cms.Process('ALPHA')
 process.load('FWCore.MessageService.MessageLogger_cfi')
 process.MessageLogger.cerr.threshold = 'ERROR'
 
-process.maxEvents = cms.untracked.PSet( input = cms.untracked.int32(5000) )
+process.maxEvents = cms.untracked.PSet( input = cms.untracked.int32(1000) )
 
 # input
 # default: if no filelist from command line, run on specified samples
@@ -23,7 +23,7 @@ if len(options.inputFiles) == 0:
     process.source = cms.Source('PoolSource',
         fileNames = cms.untracked.vstring(
             #DYJetsToLL
-            'dcap://t2-srm-02.lnl.infn.it/pnfs/lnl.infn.it/data/cms//store/mc/RunIISpring16MiniAODv2/DYJetsToLL_M-50_HT-100to200_TuneCUETP8M1_13TeV-madgraphMLM-pythia8/MINIAODSIM/PUSpring16_80X_mcRun2_asymptotic_2016_miniAODv2_v0_ext1-v1/00000/10D44CB0-4E1A-E611-8EDF-0CC47A4F1D16.root',
+            #'dcap://t2-srm-02.lnl.infn.it/pnfs/lnl.infn.it/data/cms//store/mc/RunIISpring16MiniAODv2/DYJetsToLL_M-50_HT-100to200_TuneCUETP8M1_13TeV-madgraphMLM-pythia8/MINIAODSIM/PUSpring16_80X_mcRun2_asymptotic_2016_miniAODv2_v0_ext1-v1/00000/10D44CB0-4E1A-E611-8EDF-0CC47A4F1D16.root',
             #ZJetsToNuNu
             #'dcap://t2-srm-02.lnl.infn.it/pnfs/lnl.infn.it/data/cms//store/mc/RunIISpring16MiniAODv2/ZJetsToNuNu_HT-100To200_13TeV-madgraph/MINIAODSIM/PUSpring16_80X_mcRun2_asymptotic_2016_miniAODv2_v0_ext1-v1/20000/04AC8065-D533-E611-B38A-0026B92785F6.root',
             #WJetsToLNu
@@ -39,7 +39,7 @@ if len(options.inputFiles) == 0:
             #'dcap://t2-srm-02.lnl.infn.it/pnfs/lnl.infn.it/data/cms//store/mc/RunIISpring16MiniAODv2/WZ_TuneCUETP8M1_13TeV-pythia8/MINIAODSIM/PUSpring16_80X_mcRun2_asymptotic_2016_miniAODv2_v0-v1/60000/4EDC509B-861B-E611-B919-842B2B019EA1.root',
             #'dcap://t2-srm-02.lnl.infn.it/pnfs/lnl.infn.it/data/cms//store/mc/RunIISpring16MiniAODv2/ZZ_TuneCUETP8M1_13TeV-pythia8/MINIAODSIM/PUSpring16_80X_mcRun2_asymptotic_2016_miniAODv2_v0-v1/50000/3420D4BA-E21A-E611-AD91-3417EBE64B5B.root',
             #QCD
-            #'dcap://t2-srm-02.lnl.infn.it/pnfs/lnl.infn.it/data/cms//store/mc/RunIISpring16MiniAODv2/QCD_HT200to300_TuneCUETP8M1_13TeV-madgraphMLM-pythia8/MINIAODSIM/PUSpring16_80X_mcRun2_asymptotic_2016_miniAODv2_v0_ext1-v1/70000/0CEFB979-053E-E611-8508-0025904C51F2.root',
+            'dcap://t2-srm-02.lnl.infn.it/pnfs/lnl.infn.it/data/cms//store/mc/RunIISpring16MiniAODv2/QCD_HT200to300_TuneCUETP8M1_13TeV-madgraphMLM-pythia8/MINIAODSIM/PUSpring16_80X_mcRun2_asymptotic_2016_miniAODv2_v0_ext1-v1/70000/0CEFB979-053E-E611-8508-0025904C51F2.root',
             #MET
             #'dcap://t2-srm-02.lnl.infn.it/pnfs/lnl.infn.it/data/cms//store/data/Run2016C/MET/MINIAOD/PromptReco-v2/000/275/657/00000/420FBE99-833B-E611-A4B6-02163E011EAB.root',
             #singleElectron
