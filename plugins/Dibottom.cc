@@ -723,7 +723,7 @@ Dibottom::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup)
     }
     
     //question, should we save it??
-    if(W_mT > 50. && W_mT < 160. ){isWCR=true;}
+    if(W_mT > 50. && W_mT < 160. ){if(Verbose) std::cout<<"Its a W Control Region"<<std::endl; isWCR=true;}
     
     theV.addDaughter(TightMuonVect.at(0));
     theV.addDaughter(MET);
@@ -763,7 +763,7 @@ Dibottom::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup)
       std::cout<<"The Calculated W Transverse Mass = "<<W_mT<<std::endl;
     }
     
-    if(W_mT > 50. && W_mT < 160. ){isWCR=true;}
+    if(W_mT > 50. && W_mT < 160. ){if(Verbose) std::cout<<"Its a W Control Region"<<std::endl; isWCR=true;}
       
     theV.addDaughter(TightElecVect.at(0));
     theV.addDaughter(MET);
