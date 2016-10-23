@@ -348,7 +348,7 @@ sample = {
     },
     'ZJetsToNuNu_HT-600ToInf_13TeV-madgraph-v1' : {
         'nevents' : 1015904.,
-        'xsec'    : 4.203.,
+        'xsec'    : 4.203,
         'matcheff': 0.1,
         'kfactor' : 1.391,
 
