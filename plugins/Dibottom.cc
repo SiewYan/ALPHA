@@ -110,7 +110,7 @@ Dibottom::Dibottom(const edm::ParameterSet& iConfig):
     histFile.close();
 
     nevent=0;
-    SR_counter = SR1_counter = SR2_counter = ZCR_counter = WCR_counter = TCR_counter = Preselected_counter = 0;
+    SR_counter = SR1_counter = SR2_counter = ZCR_counter = WCR_counter = TCR_counter = Preselected_counter = null_state_counter = 0;
 
     std::cout << "---------- STARTING ----------" << std::endl;
 
@@ -518,7 +518,7 @@ Dibottom::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup)
     isZtoNN=true;
     
   }
-  else {if(Verbose)std::cout<<" The loose leptons exist. It does not enter any region "<<std::endl;}
+  else {if(Verbose)std::cout<<" The loose leptons exist. It does not enter any region "<<std::endl; null_state_counter++;}
 
   if(Verbose){
     std::cout<<"isZtoEE = "<<isZtoEE<<std::endl;
@@ -1041,6 +1041,7 @@ Dibottom::endJob()
     std::cout<<"Total number of event entering ZCR = "<<ZCR_counter<<std::endl;
     std::cout<<"Total number of event entering WCR = "<<WCR_counter<<std::endl;
     std::cout<<"Total number of event entring TCR = "<<TCR_counter<<std::endl;
+    std::cout<<"Total number of event does not entering any region = "<<null_state_counter<<std::endl;
   }
 }
 

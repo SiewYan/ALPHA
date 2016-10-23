@@ -203,7 +203,7 @@ private:
   float Weta;
   int nPVW;
   
-  int SR_counter,SR1_counter,SR2_counter,ZCR_counter,WCR_counter,TCR_counter,Preselected_counter;
+  int SR_counter,SR1_counter,SR2_counter,ZCR_counter,WCR_counter,TCR_counter,Preselected_counter,null_state_counter;
 
   struct JetIndexByPt{
     const Bool_t operator() (const pat::Jet& j1, const pat::Jet& j2) {return ( (j1.pt()) > (j2.pt()) );}
