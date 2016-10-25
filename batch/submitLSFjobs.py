@@ -13,7 +13,7 @@ usage = 'usage: %prog [options]'
 parser = optparse.OptionParser(usage)
 parser.add_option('-b', '--base',         action='store', type='string', dest='base',         default='$CMSSW_BASE/src/Analysis/ALPHA/')
 parser.add_option('-o', '--output',       action='store', type='string', dest='output',       default='')
-parser.add_option('-c', '--cfg',          action='store', type='string', dest='cfg',          default='python/Diboson.py')
+parser.add_option('-c', '--cfg',          action='store', type='string', dest='cfg',          default='python/Dibottom.py')
 parser.add_option('-l', '--samplelists',  action='store', type='string', dest='samplelists',  default='base')
 parser.add_option('-q', '--queue',        action='store', type='string', dest='queue',        default='local-cms-short')
 parser.add_option('-m', '--maxlsftime',   action='store', type='int',    dest='maxlsftime',   default=4)

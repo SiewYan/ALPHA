@@ -11,16 +11,16 @@ usage = 'usage: %prog [options]'
 parser = optparse.OptionParser(usage)
 
 parser.add_option('-b', '--base',         action='store', type='string', dest='base',         default='$CMSSW_BASE/src/Analysis/ALPHA/')
-parser.add_option('-l', '--filelists'   , action='store', type='string', dest='filelists',    default='base')
+parser.add_option('-l', '--samplelists'   , action='store', type='string', dest='samplelists',    default='base')
 
 (options, args) = parser.parse_args()
 
-filelistmod = importlib.import_module('filelist_'+options.filelists)
-filelists = filelistmod.filelists
+filelistmod = importlib.import_module('samplelist_'+options.samplelists)
+samplelists = filelistmod.samplelists
 
 path = os.getcwd()
 
-for l in filelists:
+for l in samplelists:
     if not l in sample:
         print l, 'not in samples\n'
         continue
