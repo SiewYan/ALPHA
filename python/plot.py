@@ -10,9 +10,9 @@ from ROOT import TStyle, TCanvas, TPad
 from ROOT import TLegend, TLatex, TText, TLine, TBox
 
 from Analysis.ALPHA.drawUtils import *
-from Analysis.ALPHA.variables_bb import *
+from Analysis.ALPHA.variables import *
 from Analysis.ALPHA.selections_bb import *
-from Analysis.ALPHA.samples_bb import samples
+from Analysis.ALPHA.samples import sample
 
 ########## SETTINGS ##########
 
@@ -33,7 +33,8 @@ if options.bash: gROOT.SetBatch(True)
 
 gStyle.SetOptStat(0)
 
-NTUPLEDIR   = "/lustre/cmswork/hoh/CMSSW_8_0_12/src/Analysis/ALPHA/Prod_v02/"
+#NTUPLEDIR   = "/lustre/cmswork/hoh/CMSSW_8_0_12/src/Analysis/ALPHA/Prod_v03/"
+NTUPLEDIR   = "/lustre/cmswork/pazzini/VZ/CMSSW_8_0_12/src/Analysis/ALPHA/DMbb_v00/"
 LUMI        = 12900 # in pb-1
 SIGNAL      = 1.
 RATIO       = 4 # 0: No ratio plot; !=0: ratio between the top and bottom pads
@@ -43,7 +44,8 @@ jobs        = []
 
 ########## SAMPLES ##########
 data = ["data_obs"]#data_obs
-back = ["ZJetsToNuNu_HT", "DYJetsToLL_HT", "WJetsToLNu_HT", "TTbar", "ST", "VVIncl", "QCD"] #ZJetsToNuNu_HT, DYJetsToLL_HT, WJetsToLNu_HT, TTbar, ST, VVIncl, QCD
+#back = ["ZJetsToNuNu_HT", "DYJetsToLL_HT", "WJetsToLNu_HT", "TTbar", "ST", "VVIncl", "QCD"] #ZJetsToNuNu_HT, DYJetsToLL_HT, WJetsToLNu_HT, TTbar, ST, VVIncl, QCD
+back = ["QCD", "VVIncl", "ST", "TTbar", "WJetsToLNu_HT", "DYJetsToLL_HT", "ZJetsToNuNu_HT"]
 sign = []
 ########## ######## ##########
 
@@ -76,11 +78,11 @@ def plot(var, cut, nm1=False, norm=False):
     print "  cut    :", cut
     
     ### Create and fill MC histograms ###
-    #if not sign:
-    #    hist = project(var, cut, weight, data+back, pd, NTUPLEDIR)
-    #else:
-    hist = project(var, cut, weight, data+back+sign, pd, NTUPLEDIR)
-    
+    if not sign:
+        hist = project(var, cut, weight, data+back, pd, NTUPLEDIR)
+    else:
+        hist = project(var, cut, weight, data+back+sign, pd, NTUPLEDIR)
+        
     # Background sum
     if len(back)>0:
         hist['BkgSum'] = hist['data_obs'].Clone("BkgSum") if 'data_obs' in hist else hist[back[0]].Clone("BkgSum")

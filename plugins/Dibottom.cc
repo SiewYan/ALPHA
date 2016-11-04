@@ -91,8 +91,8 @@ Dibottom::Dibottom(const edm::ParameterSet& iConfig):
     }
     while(histFile >> name >> title >> nbins >> min >> max >> opt) {
         if(name.find('#')==std::string::npos) {
-            while(title.find("~")!=std::string::npos) title=title.replace(title.find("~"), 1, " "); // Remove ~
-            if(name.substr(0, 2)=="a_") Hist[name] = allDir.make<TH1F>(name.c_str(), title.c_str(), nbins, min, max); //.substr(2)
+            while(title.find("~")!=std::string::npos) title=title.replace(title.find("~"), 1, " ");
+            if(name.substr(0, 2)=="a_") Hist[name] = allDir.make<TH1F>(name.c_str(), title.c_str(), nbins, min, max);
             if(name.substr(0, 2)=="g_") Hist[name] = genDir.make<TH1F>(name.c_str(), title.c_str(), nbins, min, max);
             if(name.substr(0, 2)=="e_") Hist[name] = eleDir.make<TH1F>(name.c_str(), title.c_str(), nbins, min, max);
             if(name.substr(0, 2)=="m_") Hist[name] = muoDir.make<TH1F>(name.c_str(), title.c_str(), nbins, min, max);
@@ -659,7 +659,7 @@ Dibottom::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup)
   else if(isTtoEM) {
     if(Verbose) std::cout << " - Try to reconstruct TT -> enmn" << std::endl;
     
-    if (TightElecVect[0].charge() != -(TightMuonVect[1].charge())){
+    if (TightElecVect[0].charge() != TightMuonVect[1].charge()){
       if(Verbose) std::cout << "TT has one tight electron and tight muon with opposite sign" << std::endl;
       pat::MET* fakemet = MET.clone();
       float px = MET.px() + (TightElecVect[0].p4() + TightMuonVect[0].p4()).px();

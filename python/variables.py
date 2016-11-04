@@ -80,6 +80,20 @@ var_template = {
       "max" : 4.5,
       "log" : True,
     },
+    "nTightElectrons": {
+      "title" : "number of tight electrons",
+      "nbins" : 5,
+      "min" : -0.5,
+      "max" : 4.5,
+      "log" : True,
+    },
+    "nTightMuons": {
+      "title" : "number of tight muons",
+      "nbins" : 5,
+      "min" : -0.5,
+      "max" : 4.5,
+      "log" : True,
+    },
     "nTaus": {
       "title" : "number of taus",
       "nbins" : 5,
@@ -96,6 +110,13 @@ var_template = {
     },
     "nJets": {
       "title" : "number of jets",
+      "nbins" : 10,
+      "min" : -0.5,
+      "max" : 9.5,
+      "log" : True,
+    },
+    "nBTagJets": {
+      "title" : "number of b-tag jets",
       "nbins" : 10,
       "min" : -0.5,
       "max" : 9.5,
@@ -147,6 +168,21 @@ var_template = {
       "max" : 1200,
       "log" : True,
     },
+    "Fakemet": {
+        "title" : "hadronic #slash{E}_{T} (GeV)",
+        "nbins" : 10,
+        "min" : 0,
+        "max" : 1000,
+        "log" : True,
+        },
+    "hadronicRecoil.pt": {
+        "title" : "hadronic recoil (GeV)",
+        "nbins" : -1,
+        "bins" : [200, 300, 400, 500, 700, 1000],
+        "min" : 200,
+        "max" : 1000,
+        "log" : True,
+        },
 #    "MEt.pt": {
 #      "title" : "#slash{E}_{T} (GeV)",
 #      "nbins" : 50,
@@ -844,6 +880,13 @@ var_template = {
       "log" : True,
     },
     "Lepton[N].relIso04": {
+      "title" : "lepton [N] PFIso_{04}",
+      "nbins" : 50,
+      "min" : 0,
+      "max" : 0.25,
+      "log" : True,
+      },
+    "Lepton[N].pfIso04": {
       "title" : "lepton [N] PFIso_{04}",
       "nbins" : 50,
       "min" : 0,
