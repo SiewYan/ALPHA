@@ -3,7 +3,7 @@
 selection = {
     #dataset
     "triggerMET" : "(isMC?1:(HLT_PFMETNoMu90_PFMHTNoMu90_IDTight_v||HLT_PFMETNoMu120_PFMHTNoMu120_IDTight_v||HLT_PFMETNoMu90_JetIdCleaned_PFMHTNoMu90_IDTight_v||HLT_PFMETNoMu120_JetIdCleaned_PFMHTNoMu120_IDTight_v))",
-    "triggerEle" : "(isMC?1:HLT_Ele27_WPLoose_Gsf_v)",
+    "triggerEle" : "(isMC?1:HLT_Ele27_WPTight_Gsf_v)",
     "triggerIsoMuo20" : "(isMC?1:(HLT_IsoMu20_v||HLT_IsoTkMu20_v))",
     "triggerIsoMuo22" : "(isMC?1:(HLT_IsoMu22_v||HLT_IsoTkMu22_v))",
     "triggerIsoMuo24" : "(isMC?1:(HLT_IsoMu24_v||HLT_IsoTkMu24_v))",
