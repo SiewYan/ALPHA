@@ -1,3 +1,3 @@
 #!/bin/bash
 
-python batch/mergeLSFjobs.py Prod_v02_1
+python batch/mergeLSFjobs.py Prod_v03
