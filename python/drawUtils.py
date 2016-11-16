@@ -49,6 +49,8 @@ def project(var, cut, weight, samplelist, pd, ntupledir):
                 if s.endswith('_0l'): tmpcut += " && genNl==0"
                 elif s.endswith('_1l'): tmpcut += " && genNl==1"
                 elif s.endswith('_2l'): tmpcut += " && genNl>=2"
+                #if "(isMC?1:HLT_Ele27_WPTight_Gsf_v)" in tmpcut:
+                #    tmpcut = tmpcut.replace("(isMC?1:HLT_Ele27_WPTight_Gsf_v)","1==1")
             cutstring = "("+weight+")" + ("*("+tmpcut+")" if len(tmpcut)>0 else "")
             chain[s].Project(s, var, cutstring)
             hist[s].SetOption("%s" % chain[s].GetTree().GetEntriesFast())
@@ -235,8 +237,10 @@ def drawSignal(hist, sign, log=False):
     
     # --- Display ---
     c1 = TCanvas("c1", hist.values()[-1].GetXaxis().GetTitle(), 800, 600)
-    
-    c1.cd(1)
+    if log:
+        c1.cd(1).SetLogy()
+    else:
+        c1.cd(1)
     c1.GetPad(0).SetTopMargin(0.06)
     c1.GetPad(0).SetRightMargin(0.05)
     c1.GetPad(0).SetTicks(1, 1)
@@ -244,13 +248,16 @@ def drawSignal(hist, sign, log=False):
         c1.GetPad(0).SetLogy()
         
     # Draw
-    for i, s in enumerate(sign): hist[s].Draw("SAME, HIST" if i>0 else "HIST") # signals
+    for i, s in enumerate(sign): 
+        hist[s].SetLineColor(i+1)
+        hist[s].Draw("SAME, HIST" if i>0 else "HIST") # signals
     
     #hist[sign[0]].GetXaxis().SetRangeUser(0., 1500)
     hist[sign[0]].GetYaxis().SetTitleOffset(hist[sign[-1]].GetYaxis().GetTitleOffset()*1.075)
-    hist[sign[0]].SetMaximum(max(hist[sign[0]].GetMaximum(), hist[sign[-1]].GetMaximum())*1.25)
-    hist[sign[0]].SetMinimum(0.)
-    
+    #hist[sign[0]].SetMaximum(max(hist[sign[0]].GetMaximum(), hist[sign[-1]].GetMaximum())*1.25)
+    hist[sign[0]].SetMaximum(max(hist[sign[0]].GetMaximum(), hist[sign[-1]].GetMaximum())*3.)
+    #hist[sign[0]].SetMinimum(0.)
+    #hist[sign[0]].SetMinimum(1.)
     if log:
         hist[sign[0]].GetYaxis().SetNoExponent(hist[sign[0]].GetMaximum() < 1.e4)
         hist[sign[0]].GetYaxis().SetMoreLogLabels(True)

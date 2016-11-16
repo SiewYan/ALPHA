@@ -33,8 +33,8 @@ if options.bash: gROOT.SetBatch(True)
 
 gStyle.SetOptStat(0)
 
-#NTUPLEDIR   = "/lustre/cmswork/hoh/CMSSW_8_0_12/src/Analysis/ALPHA/Prod_v03/"
-NTUPLEDIR   = "/lustre/cmswork/pazzini/VZ/CMSSW_8_0_12/src/Analysis/ALPHA/DMbb_v00/"
+NTUPLEDIR   = "/lustre/cmswork/hoh/CMSSW_8_0_12/src/signals_root/"
+#NTUPLEDIR   = "/lustre/cmswork/pazzini/VZ/CMSSW_8_0_12/src/Analysis/ALPHA/DMbb_v01/Skim/"
 LUMI        = 12900 # in pb-1
 SIGNAL      = 1.
 RATIO       = 4 # 0: No ratio plot; !=0: ratio between the top and bottom pads
@@ -43,10 +43,27 @@ POISSON     = False
 jobs        = []
 
 ########## SAMPLES ##########
-data = ["data_obs"]#data_obs
+#data = ["data_obs"]#data_obs
 #back = ["ZJetsToNuNu_HT", "DYJetsToLL_HT", "WJetsToLNu_HT", "TTbar", "ST", "VVIncl", "QCD"] #ZJetsToNuNu_HT, DYJetsToLL_HT, WJetsToLNu_HT, TTbar, ST, VVIncl, QCD
-back = ["QCD", "VVIncl", "ST", "TTbar", "WJetsToLNu_HT", "DYJetsToLL_HT", "ZJetsToNuNu_HT"]
-sign = []
+#back = ["QCD", "VVIncl", "ST", "TTbar", "DYJetsToLL_HT","WJetsToLNu_HT" ,"ZJetsToNuNu_HT"]
+#sign= []
+####plot only sign
+data=[]
+back=[]
+#BBBAR
+#mchi =1
+#sign = ["bbDMs_Mchi1_Mphi10","bbDMs_Mchi1_Mphi20","bbDMs_Mchi1_Mphi50","bbDMs_Mchi1_Mphi100","bbDMs_Mchi1_Mphi200","bbDMs_Mchi1_Mphi300","bbDMs_Mchi1_Mphi500","bbDMs_Mchi1_Mphi10000"]
+#mchi =10
+#sign = ["bbDMs_Mchi10_Mphi10","bbDMs_Mchi10_Mphi15","bbDMs_Mchi10_Mphi50","bbDMs_Mchi10_Mphi100"]
+#mchi =50
+#sign = ["bbDMs_Mchi50_Mphi10","bbDMs_Mchi50_Mphi50","bbDMs_Mchi50_Mphi95","bbDMs_Mchi50_Mphi200","bbDMs_Mchi50_Mphi300"]
+#TTBAR
+#mchi =1
+#sign = ["ttDMs_Mchi1_Mphi10","ttDMs_Mchi1_Mphi20","ttDMs_Mchi1_Mphi50","ttDMs_Mchi1_Mphi100","ttDMs_Mchi1_Mphi200","ttDMs_Mchi1_Mphi300","ttDMs_Mchi1_Mphi500", "ttDMs_Mchi1_Mphi10000"]
+#mchi =10
+#sign = ["ttDMs_Mchi10_Mphi10","ttDMs_Mchi10_Mphi15","ttDMs_Mchi10_Mphi50","ttDMs_Mchi10_Mphi100"]
+#mchi =50
+sign = ["ttDMs_Mchi50_Mphi10","ttDMs_Mchi50_Mphi50","ttDMs_Mchi50_Mphi95","ttDMs_Mchi50_Mphi200","ttDMs_Mchi50_Mphi300"]
 ########## ######## ##########
 
 
@@ -112,11 +129,14 @@ def plot(var, cut, nm1=False, norm=False):
     if len(data+back)>0:
         out = draw(hist, data if not BLIND else [], back, sign, SIGNAL, RATIO, POISSON, variable[var]['log'])
     else:
-        out = drawSignal(hist, sign)
+        out = drawSignal(hist, sign, variable[var]['log'])
     # Other plot operations
-    if 'VX' in out[3].GetXaxis().GetTitle(): out[3].GetXaxis().SetTitle(out[3].GetXaxis().GetTitle().replace('VX', channel))
+    #if 'VX' in out[3].GetXaxis().GetTitle(): out[3].GetXaxis().SetTitle(out[3].GetXaxis().GetTitle().replace('VX', channel))
     out[0].cd(1)
-    drawCMS(LUMI, "Preliminary")
+    if len(data+back)>0:
+        drawCMS(LUMI, "Preliminary")
+    else:
+        drawCMS(LUMI, "Simulation")
     drawRegion(shortcut)
     drawAnalysis(channel)
     out[0].Update()

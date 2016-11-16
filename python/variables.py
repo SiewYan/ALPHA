@@ -164,8 +164,8 @@ var_template = {
     "MEt.pt": {
       "title" : "#slash{E}_{T} (GeV)",
       "nbins" : 10,
-      "min" : 200,
-      "max" : 1200,
+      "min" : 0,
+      "max" : 1000,
       "log" : True,
     },
     "Fakemet": {
