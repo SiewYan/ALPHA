@@ -44,24 +44,87 @@ RATIO       = 4 # 0: No ratio plot; !=0: ratio between the top and bottom pads
 BLIND       = False
 POISSON     = False
 jobs        = []
-verbal = False
+verbal = True
 ########## SAMPLES ##########
-data = ["data_obs"]
-#data = []
+#data = ["data_obs"]
+data = []
 back = ["ZJetsToNuNu_HT", "DYJetsToLL_HT", "WJetsToLNu_HT", "TTbar", "ST", "VVIncl", "QCD"] #ZJetsToNuNu_HT, DYJetsToLL_HT, WJetsToLNu_HT, TTbar, ST, VVIncl, QCD
 #back = ["QCD", "VVIncl", "ST", "TTbar", "WJetsToLNu_HT", "DYJetsToLL_HT", "ZJetsToNuNu_HT"]
 #back = ["DYJetsToLL_HT","WJetsToLNu_HT","ZJetsToNuNu_HT","TTbar", "ST", "VVIncl", "QCD"]
+#back=["VVIncl","QCD"]
 #back=["VVIncl","QCD"]
 sign = []
 ########## ######## ##########
 
 
 CutFlow={
-    "Signal" : [selection["triggerMET"],"MEt.pt>200","nJets<4","Jet1.pt>50 && abs(Jet1.eta)<2.5","MinJetMetDPhi>0.5","nElectrons==0","nMuons==0","nTaus==0","nPhotons==0","MEt.pt>250","MEt.pt>300","MEt.pt>350","MEt.pt>400","MEt.pt>450","MEt.pt>500","MEt.pt>550"
+    "Signal" : [selection["triggerMET"],"MEt.pt>200","nBTagJets<3" ,"nJets<4","Jet1.pt>50 && abs(Jet1.eta)<2.5","MinJetMetDPhi>0.5","nElectrons==0","nMuons==0","nTaus==0","nPhotons==0","MEt.pt>250","MEt.pt>300","MEt.pt>350","MEt.pt>400","MEt.pt>450","MEt.pt>500","MEt.pt>550"
                 ],
 }
 
+def projectv2(var, cut, cutflow, weight, samplelist, pd, ntupledir):
 
+    file = {}
+    tree = {}
+    chain = {}
+    hist = {}
+    dummy=[]
+    hist00={}
+    car=[]
+
+    for i, s in enumerate(samplelist):
+        if verbal:
+            print
+            print "Projecting from tree of sample %s" %s
+            print
+            print "Reading samples files"
+            print str(samples[s]['files'])
+            print
+        chain[s] = TChain("ntuple/tree")
+        for j, ss in enumerate(samples[s]['files']):
+            if not 'data' in s or ('data' in s and ss in pd):
+                if verbal: print "Interpreting "
+                if verbal: print str(ntupledir + ss + ".root")
+                chain[s].Add(ntupledir + ss + ".root")
+        if variable[var]['nbins']>0: hist[s] = TH1F(s, ";"+variable[var]['title'], variable[var]['nbins'], variable[var]['min'], variable[var]['max'])
+        else: hist[s] = TH1F(s, ";"+variable[var]['title'], len(variable[var]['bins'])-1, array('f', variable[var]['bins']))
+        hist[s].Sumw2()
+        
+        tmpcut =""
+
+        cutstring = "("+weight+")" + ("*("+tmpcut+")" if len(tmpcut)>0 else "")
+
+        cutsq=""
+        final = []
+        logic=False
+        for value in CutFlow[cutflow]:
+            dummy=hist[s]
+            
+            if len(cutsq)==0:
+                cutsq+=value
+            else:
+                cutsq+=" && "+value
+            if verbal: print (cutsq)
+            chain[s].Project(s, var, cutsq) # histogram name, string, selection
+            dummy.SetOption("%s" % chain[s].GetTree().GetEntriesFast())
+            dummy.Scale(samples[s]['weight'] if dummy.Integral() >= 0 else 0)
+            if not "&&" in cutsq:
+                car.append("MET Trigger")
+            elif ("MinJetMetDPhi" in cutsq and not logic):
+                logic=True
+                car.append("DPhiJMET>0.5")
+            elif(logic):
+                car.append(value)
+            else:
+                car.append(value)
+            car.append(dummy.Clone())
+            final.append(car)
+            #print (final)
+            car=[]
+        hist00[s]=final
+    return hist00
+
+        
 def projectv1(var, cut, cutflow, weight, samplelist, pd, ntupledir):
     # Create dict                                                                                                                                  
     file = {}
@@ -85,7 +148,7 @@ def projectv1(var, cut, cutflow, weight, samplelist, pd, ntupledir):
         #looping on three files
         for j, ss in enumerate(samples[s]['files']):
             if not 'data' in s or ('data' in s and ss in pd):
-                if verbal: print "Interpreting "
+                if verbal: print "The number of files for", str(samples[s]['files'])
                 if verbal: print str(ntupledir + ss + ".root")
                 chain[s].Add(ntupledir + ss + ".root")
             #initializing histogram
@@ -110,6 +173,7 @@ def projectv1(var, cut, cutflow, weight, samplelist, pd, ntupledir):
                 cutsq+=value
             else:
                 cutsq+=" && "+value
+            if verbal: "cutting on ",s
             if verbal: print (cutsq)
             chain[s].Project(s, var, cutsq) # histogram name, string, selection
             dummy[s].SetOption("%s" % chain[s].GetTree().GetEntriesFast())
@@ -119,7 +183,7 @@ def projectv1(var, cut, cutflow, weight, samplelist, pd, ntupledir):
                 car.append("MET Trigger")
             elif ("MinJetMetDPhi" in cutsq and not logic):
                 logic=True
-                car.append("DPhiJMET>0.5")
+                car.append("DPhiJMET>1.0")
             elif(logic):
                 car.append(value)
             else:
@@ -174,7 +238,8 @@ def printTablev1(hist, sign=[]):
 def printTable_html(hist,sign=[]):
     samplelist = [x for x in hist.keys() if not 'data' in x and not 'BkgSum' in x and not x in sign and not x=="files"]
     ###SORRY, its not working, will check 
-    datalist=hist['data_obs']
+    if len(data)>0:
+        datalist=hist['data_obs']
     #for x in hist.keys():
     #    if 'data_obs' in x:
     #        datalist=hist['data_obs']
@@ -196,8 +261,11 @@ def printTable_html(hist,sign=[]):
     print '<th></th>'
 
     for i in samplelist:
-        print "<th>%s</th>" %i,        
-    print "<th>MC</th><th>DATA</th><th>DATA/MC</th>"
+        print "<th>%s</th>" %i,
+    if len(data)==0:
+        print "<th>MC</th>"
+    else:
+        print "<th>MC</th><th>DATA</th><th>DATA/MC</th>"
     print '</tr>'
 
     for l in range(0,len(hist[samplelist[0]])):
@@ -209,10 +277,10 @@ def printTable_html(hist,sign=[]):
             print "<th>%-10.2f</th>" %((hist[samplelist[i]][l])[1])
             MC+=(hist[samplelist[i]][l])[1]
         print "<th>%-10.2f</th>" %MC
-        if len(data)==0:
-            print "<th>%-10.2f</th>" %datalist[1]
-            print "<th>%-10.2f</th>" %((datalist[1]/MC)*100)
-        else:
+        if len(data)>0:
+        #    print "<th>%-10.2f</th>" %datalist[1]
+        #    print "<th>%-10.2f</th>" %((datalist[1]/MC)*100)
+        #else:
             print "<th>%-10.2f</th>" %datalist[l][1]
             print "<th>%-10.2f</th>" %((datalist[l][1]/MC)*100)
         print '</tr>'
@@ -220,6 +288,74 @@ def printTable_html(hist,sign=[]):
     print '</head>'
     print '</html>'
 
+import copy
+def draw_cutflow(cutflow,hist,sign=[]):
+
+    if not 'BkgSum' in hist.keys():
+        hist['BkgSum'] = copy.deepcopy(hist['data_obs']) if 'data_obs' in hist else copy.deepcopy(hist[back[0]])
+        for i in hist['BkgSum']:
+            i[1].Reset("MICES")
+
+    for i, s in enumerate(back):
+        print s
+        count=0
+        for h in hist['BkgSum']:
+            print h
+            print h[1]
+            #print hist[s][count][1]
+            h[1].Add(hist[s][count][1])
+            count+=1
+
+    for h in hist['BkgSum']:
+        h[1].SetMarkerStyle(0)
+
+    # Some style                                                                                                                                  
+    for i, s in enumerate(data):
+        for h in hist[s]:
+            h[1].SetMarkerStyle(20)
+            h[1].SetMarkerSize(1.25)
+    
+    for i, s in enumerate(data+back+sign+['BkgSum']):
+        for h in hist[s]:
+            addOverflow(h[1], False) # Add overflow
+
+#    for (Int_t i=0 ; i< Xbinnum ; i++ ){
+#    h->GetXaxis()->SetBinLabel((i+1),Xbins[i].c_str());
+#  }
+
+#    h->SetBinContent(a+1,1,xsec[j]);
+
+    #bkg = THStack("Bkg", ";"+hist['BkgSum'].GetXaxis().GetTitle()+";Events")
+    #for i, s in enumerate(back): bkg.Add(hist[s])
+
+    #lencf=len(CutFlow[cutflow])
+
+    #create TCanvas
+    #c1 = TCanvas("c1", "test", 800, 800)
+    #h = TH1F("h","test", lencf, -0.5 , lencf-0.5);
+    #h.SetFillColor(38)
+    #print (lencf)
+    #for j in range(0,lencf):
+    #    #print(j)
+    #    print(CutFlow[cutflow][j])
+    #    if j==0:
+    #        h.GetXaxis().SetBinLabel(j+1,"MET trigger")
+    #    else:
+    #        h.GetXaxis().SetBinLabel(j+1,CutFlow[cutflow][j])
+
+    #for key in hist.keys():
+    #    #print (key)
+    #    counts=1
+    #    for k in hist[key]:
+    #        print (k)
+    #        print (int(k[1]))
+    #        print counts
+    #        for i in range(1,int(k[1])):
+    #            h.Fill(counts)
+    #        counts=counts+1
+    #h.Draw()
+    #c1.Update()
+    #return c1
 
 def cutflow(var, cut, cutflow, nm1=False, norm=False):
     ### Preliminary Operations ###
@@ -232,16 +368,7 @@ def cutflow(var, cut, cutflow, nm1=False, norm=False):
     channel = ""
     plotdir = ""
     shortcut = cut
-    #if cut in selection: plotdir = cut
-    #for i in range(3):
-    #    for n, c in selection.iteritems():
-    #        #n = ZeeCR , c == content cut
-    #        if n in cut: 
-    #            cut = cut.replace(n, c) 
-
-    #print(CutFlow[cutflow][0])
-    # Determine Primary Dataset
-    #print(cut)
+    
     pd = getPrimaryDataset(CutFlow[cutflow][0])
     if nm1: cut = getNm1Cut(var, cut) # N-1 cuts
     #if 'Pre' in shortcut and 'Mass' in var: cut += " && (isMC ? 0==0 : ("+var+"<65 || "+var+">135))"
@@ -263,37 +390,20 @@ def cutflow(var, cut, cutflow, nm1=False, norm=False):
     ### Create and fill MC histograms ###
     if not sign:
         hist = projectv1(var, cut, cutflow, weight, data+back, pd, NTUPLEDIR)
+        #histcut =  projectv2(var, cut, cutflow, weight, data+back, pd, NTUPLEDIR)
     else:
         hist = projectv1(var, cut, cutflow, weight, data+back+sign, pd, NTUPLEDIR)
 
-    if verbal: print(hist)
-    # Background sum
-    #if len(back)>0:
-    #    hist['BkgSum'] = hist['data_obs'].Clone("BkgSum") if 'data_obs' in hist else hist[back[0]].Clone("BkgSum")
-    #    hist['BkgSum'].Reset("MICES")
-    #    hist['BkgSum'].SetFillStyle(3003)
-    #    hist['BkgSum'].SetFillColor(1)
-    #    for i, s in enumerate(back): hist['BkgSum'].Add(hist[s])
-    
-    #if len(back)==0 and len(data)==0:
-    #    for i, s in enumerate(sign):
-    #        hist[s].Scale(1./hist[s].Integral())
-    #        hist[s].SetFillStyle(0)
-    #        #hist[s].Rebin(2)
-    
-    #if norm:
-    #    sfnorm = hist['data_obs'].Integral()/hist['BkgSum'].Integral()
-    #    for i, s in enumerate(back+['BkgSum']): hist[s].Scale(sfnorm)
-    
-    #if 'hp' in shortcut:
-    #    print "Applying HP SF to backgrounds"
-    #    for i, s in enumerate(back+['BkgSum']): hist[s].Scale(1.154)
-    #if 'lp' in shortcut:
-    #    print "Applying LP SF to backgrounds"
-    #    for i, s in enumerate(back+['BkgSum']): hist[s].Scale(0.960)
+    #if verbal: print(histcut)
+    #for i in histcut['VVIncl']:
+    #    print i
+    #    print(i[1].Integral())
 
     ### Plot ###
     #if len(data+back)>0:
+    #    out = draw_cutflow(cutflow,histcut,sign)   
+
+
     #    out = draw(hist, data if not BLIND else [], back, sign, SIGNAL, RATIO, POISSON, variable[var]['log'])
     #else:
     #    out = drawSignal(hist, sign)
@@ -313,7 +423,11 @@ def cutflow(var, cut, cutflow, nm1=False, norm=False):
     ### Other operations ###
     # Print table
     #if len(data+back)>0: printTablev1(hist, sign)
-    if len(data+back)>0: printTable_html(hist,sign)
+    if len(data+back)>0: 
+        printTable_html(hist,sign)
+        #out=draw_cutflow(cutflow,hist,sign)
+    #out.Update()
+    #out.Print("c1.png")
     if not gROOT.IsBatch(): raw_input("Press Enter to continue...")
 
 #if options.final:

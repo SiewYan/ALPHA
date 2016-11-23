@@ -185,6 +185,7 @@ def draw(hist, data, back, sign, snorm=1, ratio=0, poisson=False, log=False):
     
     setHistStyle(bkg, 1.2 if ratio else 1.1)
     setHistStyle(hist['BkgSum'], 1.2 if ratio else 1.1)
+
        
     if ratio:
         c1.cd(2)
@@ -220,12 +221,15 @@ def draw(hist, data, back, sign, snorm=1, ratio=0, poisson=False, log=False):
     c1.Update()
     
     # return list of objects created by the draw() function
-    return [c1, bkg, leg, err, errLine, res, data_graph if poisson else None, res_graph if poisson else None]
+    if not ratio:
+        return [c1, bkg, leg, data_graph if poisson else None, res_graph if poisson else None]
+    else:
+        return [c1, bkg, leg, err, errLine, res, data_graph if poisson else None, res_graph if poisson else None]
 
 
 def drawSignal(hist, sign, log=False):
     #sign = [x for x in sign if samples[x]['plot']]
-    
+    print "yo"
     # Legend
     n = len(sign)
     leg = TLegend(0.7, 0.9-0.05*n, 0.95, 0.9)
@@ -234,19 +238,20 @@ def drawSignal(hist, sign, log=False):
     leg.SetFillColor(0)
     for i, s in enumerate(sign): leg.AddEntry(hist[s], samples[s]['label'], "fl")
     
-    
+    print "hey"
     # --- Display ---
     c1 = TCanvas("c1", hist.values()[-1].GetXaxis().GetTitle(), 800, 600)
+    print "here0"
     if log:
         c1.cd(1).SetLogy()
     else:
         c1.cd(1)
+    print "here1"
     c1.GetPad(0).SetTopMargin(0.06)
     c1.GetPad(0).SetRightMargin(0.05)
     c1.GetPad(0).SetTicks(1, 1)
     if log:
         c1.GetPad(0).SetLogy()
-        
     # Draw
     for i, s in enumerate(sign): 
         hist[s].SetLineColor(i+1)
@@ -254,14 +259,13 @@ def drawSignal(hist, sign, log=False):
     
     #hist[sign[0]].GetXaxis().SetRangeUser(0., 1500)
     hist[sign[0]].GetYaxis().SetTitleOffset(hist[sign[-1]].GetYaxis().GetTitleOffset()*1.075)
-    #hist[sign[0]].SetMaximum(max(hist[sign[0]].GetMaximum(), hist[sign[-1]].GetMaximum())*1.25)
-    hist[sign[0]].SetMaximum(max(hist[sign[0]].GetMaximum(), hist[sign[-1]].GetMaximum())*3.)
-    #hist[sign[0]].SetMinimum(0.)
-    #hist[sign[0]].SetMinimum(1.)
+    hist[sign[0]].SetMaximum(max(hist[sign[0]].GetMaximum(), hist[sign[-1]].GetMaximum())*1.25)
+    #hist[sign[0]].SetMaximum(max(hist[sign[0]].GetMaximum(), hist[sign[-1]].GetMaximum())*3)
+    hist[sign[0]].SetMinimum(0.)
+    #hist[sign[0]].SetMinimum(0.001) #WRONG, look for Signal_drawUtils
     if log:
         hist[sign[0]].GetYaxis().SetNoExponent(hist[sign[0]].GetMaximum() < 1.e4)
         hist[sign[0]].GetYaxis().SetMoreLogLabels(True)
-    
     leg.Draw()
     #drawCMS(lumi, "Preliminary")
     

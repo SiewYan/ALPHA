@@ -9,7 +9,7 @@ from ROOT import TFile, TChain, TTree, TCut, TH1, TH1F, TH2F, THStack, TGraph, T
 from ROOT import TStyle, TCanvas, TPad
 from ROOT import TLegend, TLatex, TText, TLine, TBox
 
-from Analysis.ALPHA.drawUtils import *
+from Analysis.ALPHA.drawUtils_signal import *
 from Analysis.ALPHA.variables import *
 from Analysis.ALPHA.selections_bb import *
 from Analysis.ALPHA.samples import sample
@@ -50,21 +50,37 @@ jobs        = []
 ####plot only sign
 data=[]
 back=[]
-#BBBAR
-#mchi =1
+###########################Scalar
+######################BBBAR
+###############mchi =1
 #sign = ["bbDMs_Mchi1_Mphi10","bbDMs_Mchi1_Mphi20","bbDMs_Mchi1_Mphi50","bbDMs_Mchi1_Mphi100","bbDMs_Mchi1_Mphi200","bbDMs_Mchi1_Mphi300","bbDMs_Mchi1_Mphi500","bbDMs_Mchi1_Mphi10000"]
-#mchi =10
+##############mchi =10
 #sign = ["bbDMs_Mchi10_Mphi10","bbDMs_Mchi10_Mphi15","bbDMs_Mchi10_Mphi50","bbDMs_Mchi10_Mphi100"]
-#mchi =50
+##############mchi =50
 #sign = ["bbDMs_Mchi50_Mphi10","bbDMs_Mchi50_Mphi50","bbDMs_Mchi50_Mphi95","bbDMs_Mchi50_Mphi200","bbDMs_Mchi50_Mphi300"]
-#TTBAR
-#mchi =1
+#####################TTBAR
+#m############mchi =1
 #sign = ["ttDMs_Mchi1_Mphi10","ttDMs_Mchi1_Mphi20","ttDMs_Mchi1_Mphi50","ttDMs_Mchi1_Mphi100","ttDMs_Mchi1_Mphi200","ttDMs_Mchi1_Mphi300","ttDMs_Mchi1_Mphi500", "ttDMs_Mchi1_Mphi10000"]
-#mchi =10
+#############mchi =10
 #sign = ["ttDMs_Mchi10_Mphi10","ttDMs_Mchi10_Mphi15","ttDMs_Mchi10_Mphi50","ttDMs_Mchi10_Mphi100"]
-#mchi =50
-sign = ["ttDMs_Mchi50_Mphi10","ttDMs_Mchi50_Mphi50","ttDMs_Mchi50_Mphi95","ttDMs_Mchi50_Mphi200","ttDMs_Mchi50_Mphi300"]
-########## ######## ##########
+#############mchi =50
+#sign = ["ttDMs_Mchi50_Mphi10","ttDMs_Mchi50_Mphi50","ttDMs_Mchi50_Mphi95","ttDMs_Mchi50_Mphi200","ttDMs_Mchi50_Mphi300"]
+###########################PseudoScalar
+###############mchi =1                                                                                                                      
+#sign = ["bbDMps_Mchi1_Mphi10","bbDMps_Mchi1_Mphi20","bbDMps_Mchi1_Mphi50","bbDMps_Mchi1_Mphi100","bbDMps_Mchi1_Mphi200","bbDMps_Mchi1_Mphi300","bbDMps_Mchi1_Mphi500","bbDMps_Mchi1_Mphi10000"]                                                                                                                
+##############mchi =10                                                                                               
+#sign = ["bbDMps_Mchi10_Mphi10","bbDMps_Mchi10_Mphi15","bbDMps_Mchi10_Mphi50","bbDMps_Mchi10_Mphi100"]                 
+##############mchi =50                                                                                                                        
+#sign = ["bbDMps_Mchi50_Mphi10","bbDMps_Mchi50_Mphi50","bbDMps_Mchi50_Mphi95","bbDMps_Mchi50_Mphi200","bbDMps_Mchi50_Mphi300"]
+#####################TTBAR                                                                                                                                   #m############mchi =1                                                                                                                                        #sign = ["ttDMps_Mchi1_Mphi10","ttDMps_Mchi1_Mphi20","ttDMps_Mchi1_Mphi50","ttDMps_Mchi1_Mphi100","ttDMps_Mchi1_Mphi200","ttDMps_Mchi1_Mphi300","ttDMps_Mchi1_Mphi500", "ttDMps_Mchi1_Mphi10000"]                                                                                                     
+#############mchi =10                                                                                                                                      
+#sign = ["ttDMps_Mchi10_Mphi10","ttDMps_Mchi10_Mphi15","ttDMps_Mchi10_Mphi50","ttDMps_Mchi10_Mphi100"]
+#############mchi =50                                                                                                                                    
+#sign = ["ttDMps_Mchi50_Mphi10","ttDMps_Mchi50_Mphi50","ttDMps_Mchi50_Mphi95","ttDMps_Mchi50_Mphi200","ttDMps_Mchi50_Mphi300"] 
+
+
+######Comparison-> Scalar
+sign = ["bbDMps_Mchi1_Mphi10","bbDMps_Mchi1_Mphi20","ttDMps_Mchi1_Mphi10","ttDMps_Mchi1_Mphi20"]
 
 
 def plot(var, cut, nm1=False, norm=False):

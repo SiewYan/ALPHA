@@ -80,6 +80,10 @@ g_Xpt                   ;Gen~p_{T}^{X}~[GeV]                      100     0  100
 g_Zmass                 ;Gen~m_{Z}~[GeV]                          100     0   250   Lin
 g_Zpt                   ;Gen~p_{T}^{Z}~[GeV]                      100     0  5000   Lin
 g_ZdR                   ;Gen~#DeltaR~(l_{1},l_{2})                100     0     5   Lin
+g_Wmass                 ;Gen~m_{W}~[GeV]                          100     0   250   Lin
+g_Wpt                   ;Gen~p_{T}^{W}~[GeV]                      100     0  5000   Lin
+g_Weta                  ;Gen~#eta^{W}~[GeV]                       100    -5     5   Lin
+g_Wphi                  ;Gen~#varphi^{W}~[GeV]                     50 -3.15  3.15   Lin
 g_Hmass                 ;Gen~m_{H}~[GeV]                          100     0   250   Lin
 g_Hpt                   ;Gen~p_{T}^{H}~[GeV]                      100     0  5000   Lin
 g_HdR                   ;Gen~#DeltaR~(q_{1},q_{2})                100     0     5   Lin
