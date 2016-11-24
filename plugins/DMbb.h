@@ -159,7 +159,7 @@ class DMbb : public edm::one::EDAnalyzer<edm::one::SharedResources>  {
         /*TTree* treealpha;*/
         bool isMC, isZtoEE, isZtoMM, isTtoEM, isWtoEN, isWtoMN, isZtoNN, isMerged, isResolved;
         long int EventNumber, RunNumber, LumiNumber;
-        float EventWeight, StitchWeight, ZewkWeight, WewkWeight, PUWeight, TriggerWeight, LeptonWeight;
+        float EventWeight, StitchWeight, ZewkWeight, WewkWeight, TopPtWeight, PUWeight, TriggerWeight, LeptonWeight;
         float FacWeightUp, FacWeightDown, RenWeightUp, RenWeightDown, ScaleWeightUp, ScaleWeightDown;
         int nPV, nElectrons, nVetoElectrons, nLooseElectrons, nTightElectrons, nMuons, nLooseMuons, nTightMuons, nTaus, nPhotons, nJets, nFatJets, nBTagJets;
         float MaxJetBTag, MaxFatJetBTag, MinJetMetDPhi, Chi2;

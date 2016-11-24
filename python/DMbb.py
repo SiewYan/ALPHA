@@ -13,7 +13,6 @@ options.parseArguments()
 sample = (options.inputFiles[0]).split('/')[-1].replace('.txt', '') if len(options.inputFiles) > 0 else ''
 if sample=='list': sample = (options.inputFiles[0]).split('/')[-3]
 
-
 process = cms.Process('ALPHA')
 
 process.load('FWCore.MessageService.MessageLogger_cfi')
@@ -30,7 +29,10 @@ if len(options.inputFiles) == 0:
            #'dcap://t2-srm-02.lnl.infn.it/pnfs/lnl.infn.it/data/cms//store/data/Run2016B/SingleMuon/MINIAOD/PromptReco-v1/000/273/013/00000/C09E75A4-3519-E611-8BA9-02163E014476.root', # SingleMuon
            #'dcap://t2-srm-02.lnl.infn.it/pnfs/lnl.infn.it/data/cms//store/mc/RunIISpring16MiniAODv2/DYJetsToLL_M-50_HT-400to600_TuneCUETP8M1_13TeV-madgraphMLM-pythia8/MINIAODSIM/PUSpring16_80X_mcRun2_asymptotic_2016_miniAODv2_v0_ext1-v1/40000/8219CC5E-F529-E611-A621-14187733AD89.root' # DY
            #'dcap://t2-srm-02.lnl.infn.it/pnfs/lnl.infn.it/data/cms//store/data/Run2016B/SingleMuon/MINIAOD/PromptReco-v2/000/273/448/00000/48ABDF63-C41C-E611-838E-02163E011C53.root',
-           'dcap://t2-srm-02.lnl.infn.it/pnfs/lnl.infn.it/data/cms//store/mc/RunIISpring16MiniAODv2/BBbarDMJets_scalar_Mchi-1_Mphi-100_TuneCUETP8M1_v2_13TeV-madgraphMLM-pythia8/MINIAODSIM/premix_withHLT_80X_mcRun2_asymptotic_v14-v1/60000/0AA53D17-6EA0-E611-BC2E-001EC9ADCA69.root',
+           #'dcap://t2-srm-02.lnl.infn.it/pnfs/lnl.infn.it/data/cms//store/mc/RunIISpring16MiniAODv2/BBbarDMJets_scalar_Mchi-1_Mphi-100_TuneCUETP8M1_v2_13TeV-madgraphMLM-pythia8/MINIAODSIM/premix_withHLT_80X_mcRun2_asymptotic_v14-v1/60000/0AA53D17-6EA0-E611-BC2E-001EC9ADCA69.root',
+           #'dcap://t2-srm-02.lnl.infn.it/pnfs/lnl.infn.it/data/cms//store/mc/RunIISpring16MiniAODv2/DYJetsToLL_M-50_HT-100to200_TuneCUETP8M1_13TeV-madgraphMLM-pythia8/MINIAODSIM/PUSpring16_80X_mcRun2_asymptotic_2016_miniAODv2_v0_ext1-v1/00000/EE70803D-591A-E611-8781-001E672481C4.root',
+           #'dcap://t2-srm-02.lnl.infn.it/pnfs/lnl.infn.it/data/cms//store/mc/RunIISpring16MiniAODv2/WJetsToLNu_HT-600To800_TuneCUETP8M1_13TeV-madgraphMLM-pythia8/MINIAODSIM/PUSpring16_80X_mcRun2_asymptotic_2016_miniAODv2_v0_ext1-v1/00000/0CD4505A-EC4F-E611-A759-0025905B85E8.root',
+           'dcap://t2-srm-02.lnl.infn.it/pnfs/lnl.infn.it/data/cms//store/mc/RunIISpring16MiniAODv2/TT_TuneCUETP8M1_13TeV-powheg-pythia8/MINIAODSIM/PUSpring16_80X_mcRun2_asymptotic_2016_miniAODv2_v0_ext4-v1/00000/00EF026E-B728-E611-A568-008CFA110C68.root',
         )
     )
 # production: read externally provided filelist
@@ -310,6 +312,7 @@ process.ntuple = cms.EDAnalyzer('DMbb',
         sample = cms.string( sample ),
         ewkFile = cms.string('%s/src/Analysis/ALPHA/data/scalefactors_v4.root' % os.environ['CMSSW_BASE']),
         applyEWK = cms.bool(True if sample.startswith('DYJets') or sample.startswith('ZJets') or sample.startswith('WJets') else False),
+        applyTopPtReweigth = cms.bool(True if sample.startswith('TT_') else False),
         pythiaLOSample = cms.bool(True if isDibosonInclusive else False),
     ),
     pileupSet = cms.PSet(
@@ -337,7 +340,7 @@ process.ntuple = cms.EDAnalyzer('DMbb',
         eleMVANonTrigTightIdMap = cms.InputTag('egmGsfElectronIDs:mvaEleID-Spring15-25ns-nonTrig-V1-wp80'),
         eleMVATrigMediumIdMap = cms.InputTag('egmGsfElectronIDs:mvaEleID-Spring15-25ns-Trig-V1-wp90'),
         eleMVATrigTightIdMap = cms.InputTag('egmGsfElectronIDs:mvaEleID-Spring15-25ns-Trig-V1-wp80'),
-        eleSingleTriggerFileName = cms.string('%s/src/Analysis/ALPHA/data/SingleEleTriggerEff.root' % os.environ['CMSSW_BASE']),
+        eleSingleTriggerFileName = cms.string('%s/src/Analysis/ALPHA/data/eleTriggerEff.root' % os.environ['CMSSW_BASE']),
         eleVetoIdFileName = cms.string('%s/src/Analysis/ALPHA/data/eleVetoIDSF_ICHEP.root' % os.environ['CMSSW_BASE']),
         eleLooseIdFileName = cms.string('%s/src/Analysis/ALPHA/data/eleLooseIDSF_ICHEP.root' % os.environ['CMSSW_BASE']),
         eleMediumIdFileName = cms.string('%s/src/Analysis/ALPHA/data/eleMediumIDSF_ICHEP.root' % os.environ['CMSSW_BASE']),
@@ -491,7 +494,7 @@ process.ntuple = cms.EDAnalyzer('DMbb',
     writeNJets = cms.int32(4),
     writeNFatJets = cms.int32(0),
     histFile = cms.string('%s/src/Analysis/ALPHA/data/HistList.dat' % os.environ['CMSSW_BASE']),
-    verbose  = cms.bool(True),
+    verbose  = cms.bool(False),
 )
 
 
