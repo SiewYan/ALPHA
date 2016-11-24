@@ -9,8 +9,11 @@
   <class name="std::vector<JetType>"/>
   <class name="std::vector<LeptonType>"/>
   <class name="std::vector<std::size_t>"/>
+  <class name="alp::EventInfo"/>
   <class name="alp::Candidate"/>  
   <class name="std::vector<alp::Candidate>"/>  
+  <class name="alp::Lepton"/>
   <class name="alp::Jet"/>  
+  <class name="std::vector<alp::Lepton>"/>
   <class name="std::vector<alp::Jet>"/>  
 </lcgdict>
