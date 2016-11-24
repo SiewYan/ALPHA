@@ -13,6 +13,7 @@ GenAnalyzer::GenAnalyzer(edm::ParameterSet& PSet, edm::ConsumesCollector&& CColl
     Sample(PSet.getParameter<std::string>("sample")),
     EWKFileName(PSet.getParameter<std::string>("ewkFile")),
     ApplyEWK(PSet.getParameter<bool>("applyEWK")),
+    ApplyTopPtReweigth(PSet.getParameter<bool>("applyTopPtReweigth")),
     PythiaLOSample(PSet.getParameter<bool>("pythiaLOSample"))
 {
     for(unsigned int i = 0; i < SampleDYJetsToLL.size(); i++) {
@@ -363,7 +364,13 @@ float GenAnalyzer::GetStitchWeight(std::map<std::string, float> Map) {
     return StitchWeight;
 }
 
-
+/// returning the topPt weight for each top/antitop
+/// the total ttbar weight is implemented as sqrt(w_t1*w_t2)
+float GenAnalyzer::GetTopPtWeight(float toppt) {
+    if(!ApplyTopPtReweigth) return 1.;
+    if(toppt <= 0) return 1.;
+    return (toppt<400) ? sqrt(exp(0.0615-0.0005*toppt)) : sqrt(0.87066325126911626); // 0.87066325126911626 = exp(0.0615-0.0005*400)
+}
 
 float GenAnalyzer::GetZewkWeight(float zpt) {
     if(!ApplyEWK) return 1.;

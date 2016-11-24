@@ -9,6 +9,8 @@
 #include "FWCore/Framework/interface/EDConsumerBase.h"
 #include "FWCore/Framework/interface/ConsumesCollector.h"
 #include "DataFormats/PatCandidates/interface/Photon.h"
+#include "DataFormats/PatCandidates/interface/Muon.h"
+#include "DataFormats/PatCandidates/interface/Electron.h"
 #include "RecoEgamma/EgammaTools/interface/ConversionTools.h"
 #include "DataFormats/PatCandidates/interface/Conversion.h"
 #include "DataFormats/VertexReco/interface/VertexFwd.h"
@@ -32,6 +34,8 @@ class PhotonAnalyzer {
         virtual float GetPhotonIdSFMVANonTrigMedium(pat::Photon&);
         virtual float GetPhotonIdSFMVANonTrigMediumError(pat::Photon&);
         //virtual bool isLoosePhoton(pat::Photon&, const reco::Vertex*);
+        virtual void CleanPhotonsFromMuons(std::vector<pat::Photon>&, std::vector<pat::Muon>&, float);
+        virtual void CleanPhotonsFromElectrons(std::vector<pat::Photon>&, std::vector<pat::Electron>&, float);
       
     private:
       

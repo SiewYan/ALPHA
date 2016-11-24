@@ -2,6 +2,7 @@
 #pragma once
 
 #include <vector>
+#include <algorithm>
 #include "Math/Vector4D.h"
 #include "Math/Vector4Dfwd.h"
 
@@ -12,10 +13,108 @@ namespace alp {
   typedef std::vector<StringFloatPair> StringFloatPairVector;
   typedef std::pair<std::string, int> StringIntPair;
   typedef std::vector<StringIntPair> StringIntPairVector;
+  typedef std::pair<std::string, int> StringBoolPair;
+  typedef std::vector<StringIntPair> StringBoolPairVector;
 
   constexpr auto CSV_name = "pfCombinedInclusiveSecondaryVertexV2BJetTags";
   constexpr auto CMVA_name = "pfCombinedMVAV2BJetTags";
 
+  class EventInfo {
+
+    public:
+ 
+      EventInfo() {}
+      EventInfo(unsigned int event, unsigned int lumiBlock, unsigned int run) :
+				event_(event),
+    		lumiBlock_(lumiBlock),
+    		run_(run) {}
+ 
+      // copy constructor
+      EventInfo( const EventInfo& rhs) :
+        isMC_(rhs.isMC_),
+        event_(rhs.event_),
+        lumiBlock_(rhs.lumiBlock_),
+        run_(rhs.run_),
+        numPV_(rhs.numPV_),
+        filterPairs_(rhs.filterPairs_),
+        weightPairs_(rhs.weightPairs_) {}
+
+      ~EventInfo() {}
+
+      bool hasFilter(const std::string &name) const {
+    		for( auto filterPair : filterPairs_)  {
+      		if (filterPair.first == name) return true;
+    		}
+    		return false; 
+  		}
+
+      bool getFilter(const std::string &name) const {
+    		for( auto filterPair : filterPairs_)  {
+      		if (filterPair.first == name) return filterPair.second;
+    		}
+    		return false;
+  		}
+
+      bool getFilterC(const char * name) const { return getFilter(std::string(name)); }; 
+      const StringBoolPairVector & getFilterPairs() const { return filterPairs_; } 
+      void setFilterPairs(const StringBoolPairVector &filterPairs) { filterPairs_ = filterPairs; }
+
+      bool hasWeight(const std::string &name) const {
+				for( auto weightPair : weightPairs_)  {
+      		if (weightPair.first == name) return true;
+    		}
+				return false;
+			}
+
+      float getWeight(const std::string &name) const { 
+        for( auto weightPair : weightPairs_)  {
+          if (weightPair.first == name) return weightPair.second;
+        }
+        return 1;
+      }
+
+      float getWeightC(const char * name) const { return getWeight(std::string(name)); }; 
+      const StringFloatPairVector & getWeightPairs() const { return weightPairs_; } 
+      void setWeightPairs(const StringFloatPairVector &weightPairs) { weightPairs_ = weightPairs; } 
+
+      float eventWeight(const std::vector<std::string> & weights) {
+        float eventWeight = 1.0;
+        for (const auto & weightPair : weightPairs_ ) {
+          if (std::find(weights.begin(), weights.end(), weightPair.first) != weights.end())
+            eventWeight *= weightPair.second;
+        }
+        return eventWeight;
+      }
+
+      inline bool isMC() const { return isMC_; }
+      inline void setIsMC(bool isMC) { isMC_ = isMC; }
+
+      inline unsigned int getEvent() const { return event_; }
+      inline void setEvent(unsigned int event) { event_ = event; }
+      inline unsigned int getLumiBlock() const { return lumiBlock_; }
+      inline void setLumiBlock(unsigned int lumiBlock) { lumiBlock_ = lumiBlock; }
+      inline unsigned int getRun() const { return run_; }
+      inline void setRun(int run) { run_ = run; }
+
+      inline unsigned int getNumPV() const { return numPV_; }
+      inline void setNumPV(unsigned int numPV) { numPV_ = numPV; }
+
+   // attributes (also public)   
+
+      bool isMC_ = true;
+
+      unsigned int event_;
+      unsigned int lumiBlock_;
+      unsigned int run_; 
+
+      unsigned int numPV_;
+
+      // vector of generic event filters
+      StringBoolPairVector filterPairs_;  
+      // vector of pairs of weights 
+      StringFloatPairVector weightPairs_;
+      
+	};
 
   class Candidate {
 
@@ -37,11 +136,34 @@ namespace alp {
       double energy() const {return p4_.E();}
       double et() const {return p4_.Et();}
 
-    // attributes  (also public) 
+      // attributes  (also public) 
       PtEtaPhiEVector p4_;
   };
 
   typedef std::vector<alp::Candidate> CandidateCollection;
+
+
+  class Lepton  : public Candidate {
+    
+    public:
+      // default constructor
+      Lepton() : Candidate() {}
+      // copy constructor
+      Lepton( const Lepton & rhs) : 
+        Candidate(rhs),
+        iso03_(rhs.iso03_) {}
+
+      // inherit other constructors
+      using Candidate::Candidate;
+
+      float iso03() const { return iso03_;} 
+
+      // attributes (also public)
+      float iso03_ = -99.;
+
+  };
+
+  typedef std::vector<alp::Lepton> LeptonCollection;
 
   class Jet : public Candidate {
 

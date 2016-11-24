@@ -72,6 +72,62 @@ namespace alp {
     }
   }
 
+  void convert(const pat::Electron & orig, alp::Lepton & dest) {
+
+    // four-momenta
+    dest.p4_ = orig.p4();
+    // other variables (isolation only for the time being
+    dest.iso03_ = orig.hasUserFloat("pfIso03") ? orig.userFloat("pfIso03") : -1.;
+
+  }
+
+  void convert(const std::vector<pat::Electron> & orig, std::vector<alp::Lepton> & dest) {
+    dest.clear();
+    for (const auto & e : orig) {
+      dest.emplace_back();
+      convert(e,dest.back());
+    }
+  }
+
+  void convert(const pat::Muon & orig, alp::Lepton & dest) {
+
+    // four-momenta
+    dest.p4_ = orig.p4();
+    // other variables (isolation only for the time being
+    dest.iso03_ = orig.hasUserFloat("pfIso03") ? orig.userFloat("pfIso03") : -1.;
+
+  }
+
+  void convert(const std::vector<pat::Muon> & orig, std::vector<alp::Lepton> & dest) {
+    dest.clear();
+    for (const auto & e : orig) {
+      dest.emplace_back();
+      convert(e,dest.back());
+    }
+  }
+
+  void convert(const pat::MET & orig, alp::Candidate & dest) {
+
+    // four-momenta
+    dest.p4_ = orig.p4();
+
+  }
+
+  void convert(const reco::GenParticle & orig, alp::Candidate & dest) {
+
+    // four-momenta
+    dest.p4_ = orig.p4();
+
+  }
+
+  void convert(const std::vector<reco::GenParticle> & orig, std::vector<alp::Candidate> & dest) {
+    dest.clear();
+    for (const auto & e : orig) {
+      dest.emplace_back();
+      convert(e,dest.back());
+    }
+  }
+
 }
   
 

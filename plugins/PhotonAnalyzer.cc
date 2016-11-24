@@ -205,6 +205,23 @@ float PhotonAnalyzer::GetPhotonIdSFMVANonTrigMediumError(pat::Photon& el) {
   return PhotonIdMVANonTrigMedium->GetBinError(PhotonIdMVANonTrigMedium->FindBin(abseta, pt));
 }
 
+void PhotonAnalyzer::CleanPhotonsFromMuons(std::vector<pat::Photon>& Photons, std::vector<pat::Muon>& Muons, float angle) {
+    for(unsigned int m = 0; m < Muons.size(); m++) {
+        for(unsigned int j = 0; j < Photons.size(); ) {
+            if(deltaR(Photons[j], Muons[m]) < angle) Photons.erase(Photons.begin() + j);
+            else j++;
+        }
+    }
+}
+
+void PhotonAnalyzer::CleanPhotonsFromElectrons(std::vector<pat::Photon>& Photons, std::vector<pat::Electron>& Electrons, float angle) {
+    for(unsigned int e = 0; e < Electrons.size(); e++) {
+        for(unsigned int j = 0; j < Photons.size(); ) {
+            if(deltaR(Photons[j], Electrons[e]) < angle) Photons.erase(Photons.begin() + j);
+            else j++;
+        }
+    }
+}
 
 
 /*bool PhotonAnalyzer::isLoosePhoton(pat::Photon& el, const reco::Vertex* vertex) {

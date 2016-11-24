@@ -37,6 +37,8 @@ class ElectronAnalyzer {
         virtual float GetElectronRecoEffSFError(pat::Electron&);
         virtual float GetElectronTriggerSFEle105(pat::Electron&);
         virtual float GetElectronTriggerSFErrorEle105(pat::Electron&);
+        virtual float GetElectronTriggerSFEle27Tight(pat::Electron&);
+//         virtual float GetElectronTriggerSFErrorEle27Tight(pat::Electron&);
         
       
     private:
@@ -82,6 +84,8 @@ class ElectronAnalyzer {
         TH2F* EleTriggerMCHighLeg;
         TH2F* EleTriggerMCLowLeg;
         TH2F* ElectronTriggerEle105;
+        TH2F* ElectronTriggerEle27Tight;
+        TH2F* ElectronTriggerErrorEle27Tight;
         TH2F* ElectronIdVeto;
         TH2F* ElectronIdLoose;
         TH2F* ElectronIdMedium;

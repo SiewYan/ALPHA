@@ -38,6 +38,7 @@ class GenAnalyzer {
         virtual float GetStitchWeight(std::map<std::string, float>);
         virtual float GetZewkWeight(float);
         virtual float GetWewkWeight(float);
+        virtual float GetTopPtWeight(float );
         virtual float GetPUWeight(const edm::Event&);
     //    virtual float GetPDFWeight(const edm::Event&);
         virtual std::pair<float, float> GetQ2Weight(const edm::Event&);
@@ -64,6 +65,7 @@ class GenAnalyzer {
         
         std::string EWKFileName;
         bool ApplyEWK;
+        bool ApplyTopPtReweigth;
         bool PythiaLOSample;
         bool isRealData;
 
