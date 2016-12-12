@@ -37,7 +37,7 @@ if options.bash: gROOT.SetBatch(True)
 gStyle.SetOptStat(0)
 
 #NTUPLEDIR   = "/lustre/cmswork/hoh/CMSSW_8_0_12/src/Analysis/ALPHA/Prod_v03/"
-NTUPLEDIR   = "/lustre/cmswork/pazzini/VZ/CMSSW_8_0_12/src/Analysis/ALPHA/DMbb_v02/Skim/"
+NTUPLEDIR   = "/lustre/cmswork/pazzini/VZ/CMSSW_8_0_12/src/Analysis/ALPHA/DMbb_v03/Skim/"
 LUMI        = 12900 # in pb-1
 SIGNAL      = 1.
 RATIO       = 4 # 0: No ratio plot; !=0: ratio between the top and bottom pads
@@ -56,10 +56,17 @@ back = ["ZJetsToNuNu_HT", "DYJetsToLL_HT", "WJetsToLNu_HT", "TTbar", "ST", "VVIn
 sign = []
 ########## ######## ##########
 
+cat1="( ( nJets==1 && Jet1.CSV>0.800 ) || ( nJets==2 && ( ( Jet1.CSV>0.800 ) + ( Jet2.CSV>0.800 ) )==1 ) )"
+
+cat2="( Jet2.pt>50 && ( ( nJets==2 && ( ( Jet1.CSV>0.800 ) + ( Jet2.CSV>0.800 ) )==2 ) || ( nJets==3 && ( ( Jet1.CSV>0.800 ) + ( Jet2.CSV>0.800 ) + ( Jet3.CSV>0.800 ) )==2  ) ))"
 
 CutFlow={
-    "Signal" : [selection["triggerMET"],"MEt.pt>200","nBTagJets<3" ,"nJets<4","Jet1.pt>50 && abs(Jet1.eta)<2.5","MinJetMetDPhi>0.5","nElectrons==0","nMuons==0","nTaus==0","nPhotons==0","MEt.pt>250","MEt.pt>300","MEt.pt>350","MEt.pt>400","MEt.pt>450","MEt.pt>500","MEt.pt>550"
+    "Signal" : [selection["triggerMET"],"MEt.pt>200","nJets<4","Jet1.pt>50 && abs(Jet1.eta)<2.5","MinJetMetDPhi>0.5","(abs(MEt.ptCalo-MEt.pt)/MEt.pt)<0.5","nElectrons==0","nMuons==0","nTaus==0","nPhotons==0"
                 ],
+    "SR1" : [selection["triggerMET"],"MEt.pt>200","nJets<4","Jet1.pt>50 && abs(Jet1.eta)<2.5","MinJetMetDPhi>0.5","(abs(MEt.ptCalo-MEt.pt)/MEt.pt)<0.5","nElectrons==0","nMuons==0","nTaus==0","nPhotons==0","cat1"
+             ],
+    "SR2" : [selection["triggerMET"],"MEt.pt>200","nJets<4","Jet1.pt>50 && abs(Jet1.eta)<2.5","MinJetMetDPhi>0.5","(abs(MEt.ptCalo-MEt.pt)/MEt.pt)<0.5","nElectrons==0","nMuons==0","nTaus==0","nPhotons==0","cat2"
+             ],
 }
 
 def projectv2(var, cut, cutflow, weight, samplelist, pd, ntupledir):

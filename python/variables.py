@@ -164,7 +164,7 @@ var_template = {
     "MEt.pt": {
       "title" : "#slash{E}_{T} (GeV)",
       "nbins" : 10,
-      "min" : 0,
+      "min" : 200,
       "max" : 1000,
       "log" : True,
     },
@@ -181,6 +181,20 @@ var_template = {
         "bins" : [200, 300, 400, 500, 700, 1000],
         "min" : 200,
         "max" : 1000,
+        "log" : True,
+        },
+    "MEt.ptCalo":{
+        "title" : "CaloMET (GeV)",
+        "nbins" : 10,
+        "min" : 0,
+        "max" : 1000,
+        "log" : True,
+        },
+    "fabs(MEt.ptCalo-MEt.pt)/MEt.ptCalo":{
+        "title" : "|CaloMET-PFMET|/CaloMET",
+        "nbins" : 50,
+        "min" : 0,
+        "max" : 50,
         "log" : True,
         },
 #    "MEt.pt": {

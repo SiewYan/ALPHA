@@ -33,7 +33,7 @@ if options.bash: gROOT.SetBatch(True)
 
 gStyle.SetOptStat(0)
 
-NTUPLEDIR   = "/lustre/cmswork/hoh/CMSSW_8_0_12/src/signals_root/"
+NTUPLEDIR   = "/lustre/cmswork/hoh/CMSSW_8_0_12/src/Analysis/ALPHA/bbDM_v03_skim_processed/"
 #NTUPLEDIR   = "/lustre/cmswork/pazzini/VZ/CMSSW_8_0_12/src/Analysis/ALPHA/DMbb_v01/Skim/"
 LUMI        = 12900 # in pb-1
 SIGNAL      = 1.
@@ -50,6 +50,7 @@ jobs        = []
 ####plot only sign
 data=[]
 back=[]
+#sign = [s for s, p in sample.iteritems() if 'DM' in s]
 ###########################Scalar
 ######################BBBAR
 ###############mchi =1
@@ -60,7 +61,7 @@ back=[]
 #sign = ["bbDMs_Mchi50_Mphi10","bbDMs_Mchi50_Mphi50","bbDMs_Mchi50_Mphi95","bbDMs_Mchi50_Mphi200","bbDMs_Mchi50_Mphi300"]
 #####################TTBAR
 #m############mchi =1
-#sign = ["ttDMs_Mchi1_Mphi10","ttDMs_Mchi1_Mphi20","ttDMs_Mchi1_Mphi50","ttDMs_Mchi1_Mphi100","ttDMs_Mchi1_Mphi200","ttDMs_Mchi1_Mphi300","ttDMs_Mchi1_Mphi500", "ttDMs_Mchi1_Mphi10000"]
+sign = ["ttDMs_Mchi1_Mphi10","ttDMs_Mchi1_Mphi20","ttDMs_Mchi1_Mphi50","ttDMs_Mchi1_Mphi100","ttDMs_Mchi1_Mphi200","ttDMs_Mchi1_Mphi300","ttDMs_Mchi1_Mphi500", "ttDMs_Mchi1_Mphi10000"]
 #############mchi =10
 #sign = ["ttDMs_Mchi10_Mphi10","ttDMs_Mchi10_Mphi15","ttDMs_Mchi10_Mphi50","ttDMs_Mchi10_Mphi100"]
 #############mchi =50
@@ -80,7 +81,7 @@ back=[]
 
 
 ######Comparison-> Scalar
-sign = ["bbDMps_Mchi1_Mphi10","bbDMps_Mchi1_Mphi20","ttDMps_Mchi1_Mphi10","ttDMps_Mchi1_Mphi20"]
+#sign = ["bbDMps_Mchi1_Mphi10","bbDMps_Mchi1_Mphi20","ttDMps_Mchi1_Mphi10","ttDMps_Mchi1_Mphi20"]
 
 
 def plot(var, cut, nm1=False, norm=False):
@@ -103,7 +104,7 @@ def plot(var, cut, nm1=False, norm=False):
     if len(data)>0 and len(pd)==0: raw_input("Warning: Primary Dataset not recognized, continue?")
     
     # Determine weight
-    weight = "EventWeight"
+    weight = "EventWeight*btagWeight"
     
     print "Plotting", var, "in", channel, "channel with:"
     print "  dataset:", pd
