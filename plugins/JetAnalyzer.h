@@ -68,6 +68,7 @@ class JetAnalyzer {
         virtual bool isTightJet(pat::Jet&);
         virtual bool isTightLepVetoJet(pat::Jet&);
         virtual std::vector<float> ReshapeBtagDiscriminator(pat::Jet&);
+	virtual double GetMETriggerSF(pat::MET&);
       
     private:
     
@@ -93,9 +94,16 @@ class JetAnalyzer {
         bool UseRecoil;
         std::string RecoilMCFile;
         std::string RecoilDataFile;
+	std::string MET_HLT_SF;
         std::string JerName_res;
         std::string JerName_sf;
         float Rparameter;
+
+	//get trigger met scale factor                                                                                            
+	TFile* METriggerFile;
+        TH1F* METriggerNoMu;
+        bool isMETriggerNoMuFile;
+
         
         TFile* PuppiCorrFile;
         TF1* PuppiJECcorr_gen;
@@ -134,6 +142,7 @@ class JetAnalyzer {
         
         // Recoil corrections
         RecoilCorrector* recoilCorr;
+	
 };
 
 #endif

@@ -33,13 +33,25 @@ JetAnalyzer::JetAnalyzer(edm::ParameterSet& PSet, edm::ConsumesCollector&& CColl
     UseRecoil(PSet.getParameter<bool>("metRecoil")),
     RecoilMCFile(PSet.getParameter<std::string>("metRecoilMC")),
     RecoilDataFile(PSet.getParameter<std::string>("metRecoilData")),
+    MET_HLT_SF(PSet.getParameter<std::string>("metSFTrig")),
     JerName_res(PSet.getParameter<std::string>("jerNameRes")),
     JerName_sf(PSet.getParameter<std::string>("jerNameSf"))
 {
+
+  isMETriggerNoMuFile=false;
   
     jecUncMC = new JetCorrectionUncertainty(JECUncertaintyMC);
     jecUncDATA = new JetCorrectionUncertainty(JECUncertaintyDATA);
-    
+
+    METriggerFile=new TFile(MET_HLT_SF.c_str(), "READ");
+    if(!METriggerFile->IsZombie()) {
+      METriggerNoMu=(TH1F*)METriggerFile->Get("hden_monojet_recoil_clone_passed"); 
+      isMETriggerNoMuFile=true;
+    }
+    else {
+      throw cms::Exception("JetAnalyzer", "No METriggerNoMu File");
+      return;
+    }    
     
     if(RecalibrateJets) {
         std::vector<JetCorrectorParameters> jetParMC;
@@ -465,6 +477,14 @@ pat::MET JetAnalyzer::FillMetVector(const edm::Event& iEvent) {
     MEt.addUserFloat("ptType1", MEt.pt());
     MEt.addUserFloat("phiType1", MEt.phi());
     return MEt;
+}
+
+
+double JetAnalyzer::GetMETriggerSF(pat::MET& met) {
+  if (!isMETriggerNoMuFile) return 1.;
+  float metpt=met.pt();
+  float effmet = METriggerNoMu->GetBinContent(METriggerNoMu->FindBin(metpt));
+  return effmet;
 }
 
 void JetAnalyzer::ApplyRecoilCorrections(pat::MET& MET, const reco::Candidate::LorentzVector* GenV, const reco::Candidate::LorentzVector* RecoV, int nJets) {

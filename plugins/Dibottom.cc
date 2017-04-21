@@ -200,9 +200,9 @@ Dibottom::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup)
   // Trigger
   theTriggerAnalyzer->FillTriggerMap(iEvent, TriggerMap);
   theTriggerAnalyzer->FillMetFiltersMap(iEvent, MetFiltersMap);
-  BadPFMuonFlag = theTriggerAnalyzer->GetBadPFMuonFlag(iEvent);
-  BadChCandFlag = theTriggerAnalyzer->GetBadChCandFlag(iEvent);
-  EventWeight *= TriggerWeight;
+  //BadPFMuonFlag = theTriggerAnalyzer->GetBadPFMuonFlag(iEvent); //since we are not using Muon trigger
+  //BadChCandFlag = theTriggerAnalyzer->GetBadChCandFlag(iEvent);
+  //EventWeight *= TriggerWeight;
 
   // Electrons 
   std::vector<pat::Electron> ElecVect = theElectronAnalyzer->FillElectronVector(iEvent);
@@ -263,7 +263,7 @@ Dibottom::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup)
   // Gen weights
   std::map<int, float> GenWeight = theGenAnalyzer->FillWeightsMap(iEvent);
   
-  if(GenWeight.find(-1) != GenWeight.end()) EventWeight   *= GenWeight[-1];
+  //if(GenWeight.find(-1) != GenWeight.end()) EventWeight   *= GenWeight[-1];
   if(GenWeight.find(1) != GenWeight.end()) FacWeightUp     = GenWeight[1];
   if(GenWeight.find(2) != GenWeight.end()) FacWeightDown   = GenWeight[2];
   if(GenWeight.find(3) != GenWeight.end()) RenWeightUp     = GenWeight[3];
@@ -297,6 +297,7 @@ Dibottom::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup)
   // Mc Stitching
   StitchWeight = theGenAnalyzer->GetStitchWeight(LheMap);
   //EventWeight *= StitchWeight; // Not yet
+
   // Gen Particles
   std::vector<reco::GenParticle> GenPVect = theGenAnalyzer->FillGenVector(iEvent); //serve as a carrier
   // Gen candidates
@@ -343,6 +344,11 @@ Dibottom::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup)
   // Dummy trigger
   //TriggerWeight*=theElectronAnalyzer->GetDoubleElectronTriggerSF(ElecVect.at(0), ElecVect.at(1));
   //TriggerWeight*=theMuonAnalyzer->GetDoubleMuonTriggerSF(MuonVect.at(0), MuonVect.at(1));
+
+  TriggerWeight*=theJetAnalyzer->GetMETriggerSF(MET);
+  EventWeight *= TriggerWeight;
+
+  std::cout<<"MET pt = "<<MET.pt()<<" , with SF = "<<TriggerWeight<<std::endl;
 
   Hist["a_nEvents"]->Fill(2., EventWeight);
   Hist["e_nEvents"]->Fill(2., EventWeight);
@@ -451,7 +457,7 @@ Dibottom::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup)
   }
   else if(isZtoEE) {
     if(Verbose) std::cout << " - Try to reconstruct Z -> ee" << std::endl;
-    std::cout<<"nElectron = "<<nElectrons<<std::endl;
+  
     // Indentify leptons
     int e1(-1), e2(-1);
     float maxZpt(-1.);
@@ -474,13 +480,13 @@ Dibottom::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup)
 	LeptonWeight *= theElectronAnalyzer->GetElectronRecoEffSF(ElecVect.at(e1));
 	LeptonWeight *= theElectronAnalyzer->GetElectronRecoEffSF(ElecVect.at(e2));
 	if (ElecVect.at(e1).pt() > ElecVect.at(e2).pt() ) {
-	  /// FIXME -> APPLYING THE SF FOR Ele27 HADRCODED <- FIXME ///
+	  /// APPLIED SF https://indico.cern.ch/event/604912/ ///
 	  LeptonWeight *= theElectronAnalyzer->GetElectronTriggerSFEle27Tight(ElecVect.at(e1));
 	  LeptonWeight *= theElectronAnalyzer->GetElectronIdSF(ElecVect.at(e1), 3);// TightID
 	  LeptonWeight *= theElectronAnalyzer->GetElectronIdSF(ElecVect.at(e2), 1);// LooseID
 	}
 	else {
-	  /// FIXME -> APPLYING THE SF FOR Ele27 HADRCODED <- FIXME ///
+	  /// APPLIED SF https://indico.cern.ch/event/604912/ ///
 	  LeptonWeight *= theElectronAnalyzer->GetElectronTriggerSFEle27Tight(ElecVect.at(e2));                
 	  LeptonWeight *= theElectronAnalyzer->GetElectronIdSF(ElecVect.at(e2), 3);// TightID
 	  LeptonWeight *= theElectronAnalyzer->GetElectronIdSF(ElecVect.at(e1), 1);// LooseID
@@ -666,7 +672,10 @@ Dibottom::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup)
     if( !isZtoEE && !isZtoMM && !isZtoNN && !isWtoEN && !isWtoMN && !isTtoEM ) return;
   
   // Fill tree
-  tree->Fill();
+    if (MET.pt() > 150)
+      tree->Fill();
+    else if (Verbose)
+      std::cout << "Event not fill, MET.pt() < 150 GeV" << std::endl;
   
 }
 
