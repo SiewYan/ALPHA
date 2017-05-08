@@ -80,9 +80,8 @@ Dibottom::Dibottom(const edm::ParameterSet& iConfig):
     TFileDirectory kinDir=fs->mkdir("Kin/");
     
     // Make TH1F
-    std::vector<std::string> nLabels={"All", "Trigger", "Iso Lep #geq 2", "Z cand ", "Jets #geq 2", "Z mass ", "h mass ", "Top veto", "bJets #geq 1", "bJets #geq 2"};
-
-    std::vector<std::string> labels={"All", "Trigger", "nJets #leq 4", "Jet cut", "Leptoncut", "V Cand", "Reco V"};
+    std::vector<std::string> nLabels={ 
+        "All" , "Trigger" , "Iso Lep #geq 2" , "Z cand " , "Jets #geq 2" , "Z mass " , "h mass " , "Top veto" , "bJets #geq 1" , "bJets #geq 2" };
     
     int nbins;
     float min, max;
@@ -107,7 +106,6 @@ Dibottom::Dibottom(const edm::ParameterSet& iConfig):
             Hist[name]->SetOption(opt.c_str());
             // Particular histograms
             if(name=="a_nEvents" || name=="e_nEvents" || name=="m_nEvents") for(unsigned int i=0; i<nLabels.size(); i++) Hist[name]->GetXaxis()->SetBinLabel(i+1, nLabels[i].c_str());
-	    //if(name=="a_PrenEvents") for(unsigned int i=0; i<labels.size(); i++) Hist[name]->GetXaxis()->SetBinLabel(i+1,labels[i].c_str());
         }
     }
     histFile.close();
@@ -345,11 +343,6 @@ Dibottom::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup)
   //TriggerWeight*=theElectronAnalyzer->GetDoubleElectronTriggerSF(ElecVect.at(0), ElecVect.at(1));
   //TriggerWeight*=theMuonAnalyzer->GetDoubleMuonTriggerSF(MuonVect.at(0), MuonVect.at(1));
 
-  TriggerWeight*=theJetAnalyzer->GetMETriggerSF(MET);
-  EventWeight *= TriggerWeight;
-
-  std::cout<<"MET pt = "<<MET.pt()<<" , with SF = "<<TriggerWeight<<std::endl;
-
   Hist["a_nEvents"]->Fill(2., EventWeight);
   Hist["e_nEvents"]->Fill(2., EventWeight);
   Hist["m_nEvents"]->Fill(2., EventWeight);
@@ -428,7 +421,7 @@ Dibottom::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup)
 	LeptonWeight *= theMuonAnalyzer->GetMuonTrkSF(MuonVect.at(m2));
 	if (MuonVect.at(m1).pt() > MuonVect.at(m2).pt() ) {
 	  /// FIXME -> APPLYING THE SF FOR IsoMu24 HADRCODED <- FIXME ///
-	  LeptonWeight *= theMuonAnalyzer->GetMuonTriggerSFIsoMu24(MuonVect.at(m1));
+	  //LeptonWeight *= theMuonAnalyzer->GetMuonTriggerSFIsoMu24(MuonVect.at(m1));
 	  LeptonWeight *= theMuonAnalyzer->GetMuonIdSF(MuonVect.at(m1), 3); // TightID
 	  LeptonWeight *= theMuonAnalyzer->GetMuonIsoSF(MuonVect.at(m1), 2);// TightIso
 	  LeptonWeight *= theMuonAnalyzer->GetMuonIdSF(MuonVect.at(m2), 1); // LooseID
@@ -436,7 +429,7 @@ Dibottom::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup)
 	}
 	else {
 	  /// FIXME -> APPLYING THE SF FOR IsoMu24 HADRCODED <- FIXME ///
-	  LeptonWeight *= theMuonAnalyzer->GetMuonTriggerSFIsoMu24(MuonVect.at(m2));
+	  //LeptonWeight *= theMuonAnalyzer->GetMuonTriggerSFIsoMu24(MuonVect.at(m2));
 	  LeptonWeight *= theMuonAnalyzer->GetMuonIdSF(MuonVect.at(m2), 3); // TightID
 	  LeptonWeight *= theMuonAnalyzer->GetMuonIsoSF(MuonVect.at(m2), 2);// TightIso
 	  LeptonWeight *= theMuonAnalyzer->GetMuonIdSF(MuonVect.at(m1), 1); // LooseID
@@ -571,12 +564,19 @@ Dibottom::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup)
     if(Verbose) std::cout << " - Try to reconstruct Z -> nn" << std::endl;
     theV.addDaughter(MET);
     addP4.set(theV);
+
+    if (isMC){
+      TriggerWeight=theJetAnalyzer->GetMETriggerSF(MET);
+      std::cout<<"MET pt = "<<MET.pt()<<" , with HLT MET SF = "<<TriggerWeight<<std::endl;
+    } 
+
   }
   
   else { if(Verbose) std::cout << " - No reconstructible V candidate" << std::endl; return; }
   
   
   // Update event weight with lepton selections
+  EventWeight *= TriggerWeight;
   EventWeight *= LeptonWeight;
   
   Hist["a_nEvents"]->Fill(4., EventWeight);
@@ -662,6 +662,7 @@ Dibottom::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup)
   for(unsigned int i = 0; i < Jets.size() && i < JetsVect.size(); i++) ObjectsFormat::FillJetType(Jets[i], &JetsVect[i], isMC);
   
   ObjectsFormat::FillMEtType(MEt, &MET, isMC);
+  ObjectsFormat::FillMEtType(hadronicRecoil , &hadRecoil , isMC);
   ObjectsFormat::FillCandidateType(V, &theV, isMC); // V is the reconstructed boson
 
  if (Verbose) {
@@ -672,10 +673,13 @@ Dibottom::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup)
     if( !isZtoEE && !isZtoMM && !isZtoNN && !isWtoEN && !isWtoMN && !isTtoEM ) return;
   
   // Fill tree
-    if (MET.pt() > 150)
-      tree->Fill();
-    else if (Verbose)
-      std::cout << "Event not fill, MET.pt() < 150 GeV" << std::endl;
+    if (MET.pt() < 150) return;
+
+    tree->Fill();
+    //else if (Verbose)
+      //std::cout << "Event not fill, because MET.pt() < 150 GeV" << std::endl;
+
+    if (Verbose) { std::cout << std::endl; std::cout<<"##################################################"<<std::endl; }
   
 }
 
