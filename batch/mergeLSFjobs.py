@@ -5,10 +5,12 @@ import commands
 import math, time
 import sys
 from ROOT import TObject, TFile, TH1, TH1F
-from Analysis.ALPHA.samples import sample
+from Analysis.ALPHA.samplesMoriond_BB import sample
 from array import array
 
-LUMI        = 12900 # in pb-1
+#LUMI        = 12900 # in pb-1
+#brilcalc lumi -b "STABLE BEAMS" --normtag /afs/cern.ch/user/l/lumipro/public/normtag_file/normtag_DATACERT.json -i Cert_271036-284044_13TeV_23Sep2016ReReco_Collisions16_JSON.txt -u /pb
+LUMI        = 35867 #in pb-1
 
 # use the following lists to include/exclude samples to be merged
 

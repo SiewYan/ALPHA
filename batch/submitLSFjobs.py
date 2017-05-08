@@ -4,7 +4,8 @@ import commands
 import math, time
 import sys
 import importlib
-from Analysis.ALPHA.samples import sample
+#from Analysis.ALPHA.samplesMoriond_BB import sample
+from Analysis.ALPHA.samples_bbDM_summer16 import sample
 
 ########## OPTIONS ##########
 
@@ -13,7 +14,7 @@ usage = 'usage: %prog [options]'
 parser = optparse.OptionParser(usage)
 parser.add_option('-b', '--base',         action='store', type='string', dest='base',         default='$CMSSW_BASE/src/Analysis/ALPHA/')
 parser.add_option('-o', '--output',       action='store', type='string', dest='output',       default='')
-parser.add_option('-c', '--cfg',          action='store', type='string', dest='cfg',          default='python/Diboson.py')
+parser.add_option('-c', '--cfg',          action='store', type='string', dest='cfg',          default='python/Dibottom.py')
 parser.add_option('-l', '--samplelists',  action='store', type='string', dest='samplelists',  default='base')
 parser.add_option('-q', '--queue',        action='store', type='string', dest='queue',        default='local-cms-short')
 parser.add_option('-m', '--maxlsftime',   action='store', type='int',    dest='maxlsftime',   default=4)
@@ -58,7 +59,7 @@ for l in samplelists:
     if not l in sample:
         print l, 'not in samples\n'
         continue
-    dir= 'Run2016' if 'Run2016' in l else 'Spring16'
+    dir= 'Run2016' if 'Run2016' in l else 'Summer16'
     file=open(os.path.expandvars(options.base+'filelists/'+dir+'/'+l+'.txt'),'r')
     filelist = file.readlines()
     splitting= max(int(float(sample[l]['nevents'])/(options.maxlsftime*3600*options.eventspersec)),1)

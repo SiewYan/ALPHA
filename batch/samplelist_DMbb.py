@@ -4,36 +4,36 @@ samplelists = [
 ####### DATA
 
 ### Run2016B
-'SingleMuonRun2016B-PromptReco-v1',
-'SingleMuonRun2016B-PromptReco-v2',
-'SingleElectronRun2016B-PromptReco-v1',
-'SingleElectronRun2016B-PromptReco-v2',
+#'SingleMuonRun2016B-PromptReco-v1',
+#'SingleMuonRun2016B-PromptReco-v2',
+#'SingleElectronRun2016B-PromptReco-v1',
+#'SingleElectronRun2016B-PromptReco-v2',
 'METRun2016B-PromptReco-v1',
-'METRun2016B-PromptReco-v2',
+#'METRun2016B-PromptReco-v2',
 
 ### Run2016C
-'SingleMuonRun2016C-PromptReco-v2',
-'SingleElectronRun2016C-PromptReco-v2',
-'METRun2016C-PromptReco-v2',
+#'SingleMuonRun2016C-PromptReco-v2',
+#'SingleElectronRun2016C-PromptReco-v2',
+#'METRun2016C-PromptReco-v2',
 
 ### Run2016D
-'SingleMuonRun2016D-PromptReco-v2',
-'SingleElectronRun2016D-PromptReco-v2',
-'METRun2016D-PromptReco-v2',
+#'SingleMuonRun2016D-PromptReco-v2',
+#'SingleElectronRun2016D-PromptReco-v2',
+#'METRun2016D-PromptReco-v2',
 
 ######## MC
 
 ### Z(ll)+jets
-'DYJetsToLL_M-50_HT-100to200_TuneCUETP8M1_13TeV-madgraphMLM-pythia8_ext1-v1',
-'DYJetsToLL_M-50_HT-200to400_TuneCUETP8M1_13TeV-madgraphMLM-pythia8_ext1-v1',
-'DYJetsToLL_M-50_HT-400to600_TuneCUETP8M1_13TeV-madgraphMLM-pythia8_ext1-v1',
-'DYJetsToLL_M-50_HT-600toInf_TuneCUETP8M1_13TeV-madgraphMLM-pythia8_ext1-v1',
+#'DYJetsToLL_M-50_HT-100to200_TuneCUETP8M1_13TeV-madgraphMLM-pythia8_ext1-v1',
+#'DYJetsToLL_M-50_HT-200to400_TuneCUETP8M1_13TeV-madgraphMLM-pythia8_ext1-v1',
+#'DYJetsToLL_M-50_HT-400to600_TuneCUETP8M1_13TeV-madgraphMLM-pythia8_ext1-v1',
+#'DYJetsToLL_M-50_HT-600toInf_TuneCUETP8M1_13TeV-madgraphMLM-pythia8_ext1-v1',
 
 ### W(lnu)+jets
-'WJetsToLNu_HT-100To200_TuneCUETP8M1_13TeV-madgraphMLM-pythia8_ext1-v1',
-'WJetsToLNu_HT-200To400_TuneCUETP8M1_13TeV-madgraphMLM-pythia8_ext1-v1',
-'WJetsToLNu_HT-400To600_TuneCUETP8M1_13TeV-madgraphMLM-pythia8_ext1-v1',
-'WJetsToLNu_HT-600To800_TuneCUETP8M1_13TeV-madgraphMLM-pythia8_ext1-v1',
+#'WJetsToLNu_HT-100To200_TuneCUETP8M1_13TeV-madgraphMLM-pythia8_ext1-v1',
+#'WJetsToLNu_HT-200To400_TuneCUETP8M1_13TeV-madgraphMLM-pythia8_ext1-v1',
+#'WJetsToLNu_HT-400To600_TuneCUETP8M1_13TeV-madgraphMLM-pythia8_ext1-v1',
+#'WJetsToLNu_HT-600To800_TuneCUETP8M1_13TeV-madgraphMLM-pythia8_ext1-v1',
 'WJetsToLNu_HT-800To1200_TuneCUETP8M1_13TeV-madgraphMLM-pythia8_ext1-v1',
 'WJetsToLNu_HT-1200To2500_TuneCUETP8M1_13TeV-madgraphMLM-pythia8_ext1-v1',
 'WJetsToLNu_HT-2500ToInf_TuneCUETP8M1_13TeV-madgraphMLM-pythia8_ext1-v1',
