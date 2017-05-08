@@ -32,12 +32,13 @@ ElectronAnalyzer::ElectronAnalyzer(const edm::ParameterSet& PSet, edm::ConsumesC
 {
     isEleVetoIdFile = isEleLooseIdFile = isEleMediumIdFile = isEleTightIdFile = isEleRecoEffFile = isEleMVATrigMediumIdFile = isEleMVATrigTightIdFile = isEleTriggerFile = isEleSingleTriggerFile = false;    
 
-    // FIXME -> 2016 numbers, now obsolete!!!
     // Electron SingleTrigger
     EleSingleTriggerFile=new TFile(EleSingleTriggerFileName.c_str(), "READ");
     if(!EleSingleTriggerFile->IsZombie()) {
-      ElectronTriggerEle105=(TH2F*)EleSingleTriggerFile->Get("Ele105/eleTrigEff_Ele105");//X:pt;Y:eta
-      ElectronTriggerEle27Tight=(TH2F*)EleSingleTriggerFile->Get("Ele27_WPTight/eleTrigEff_Ele27Tight");//X:eta;Y:pt
+      //ElectronTriggerEle105=(TH2F*)EleSingleTriggerFile->Get("Ele105/eleTrigEff_Ele105");//X:pt;Y:eta
+      //ElectronTriggerEle27Tight=(TH2F*)EleSingleTriggerFile->Get("Ele27_WPTight_Gsf"); //X:pt;Y:eta 
+      ElectronTriggerEle27Tight=(TH2F*)EleSingleTriggerFile->Get("hEffEtaPt"); //X:eta;Y:pt
+
       isEleSingleTriggerFile=true;
     }
     else {
