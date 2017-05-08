@@ -14,7 +14,7 @@ process = cms.Process('ALPHA')
 process.load('FWCore.MessageService.MessageLogger_cfi')
 process.MessageLogger.cerr.threshold = 'ERROR'
 
-process.maxEvents = cms.untracked.PSet( input = cms.untracked.int32(100) )
+process.maxEvents = cms.untracked.PSet( input = cms.untracked.int32(-1) )
 
 # input
 # default: if no filelist from command line, run on specified samples
@@ -391,7 +391,7 @@ process.ntuple = cms.EDAnalyzer('Dibottom',
         eleMVATrigMediumIdMap = cms.InputTag('egmGsfElectronIDs:mvaEleID-Spring16-GeneralPurpose-V1-wp90'), # same as non-trig in 2017
         eleMVATrigTightIdMap = cms.InputTag('egmGsfElectronIDs:mvaEleID-Spring16-GeneralPurpose-V1-wp80'), # same as non-trig in 2017
         eleEcalRecHitCollection = cms.InputTag("reducedEgamma:reducedEBRecHits"),
-        eleSingleTriggerFileName = cms.string('%s/src/Analysis/ALPHA/data/SingleEleTriggerSF_Run2016All_v1.root' % os.environ['CMSSW_BASE']), #note, trigger sf file
+        eleSingleTriggerFileName = cms.string('%s/src/Analysis/ALPHA/data/eleTrig.root' % os.environ['CMSSW_BASE']), #note, trigger sf file
         eleVetoIdFileName = cms.string('%s/src/Analysis/ALPHA/data/eleVetoIDSF_MORIOND17.root' % os.environ['CMSSW_BASE']),
         eleLooseIdFileName = cms.string('%s/src/Analysis/ALPHA/data/eleLooseIDSF_MORIOND17.root' % os.environ['CMSSW_BASE']),
         eleMediumIdFileName = cms.string('%s/src/Analysis/ALPHA/data/eleMediumIDSF_MORIOND17.root' % os.environ['CMSSW_BASE']),
@@ -399,8 +399,8 @@ process.ntuple = cms.EDAnalyzer('Dibottom',
         eleMVATrigMediumIdFileName = cms.string('%s/src/Analysis/ALPHA/data/eleMVA90IDSF_MORIOND17.root' % os.environ['CMSSW_BASE']),
         eleMVATrigTightIdFileName = cms.string('%s/src/Analysis/ALPHA/data/eleMVA80IDSF_MORIOND17.root' % os.environ['CMSSW_BASE']),
         eleRecoEffFileName = cms.string('%s/src/Analysis/ALPHA/data/eleRecoSF_MORIOND17.root' % os.environ['CMSSW_BASE']),
-        electron1id = cms.int32(0), # 0: veto, 1: loose, 2: medium, 3: tight, 4: HEEP, 5: MVA medium nonTrig, 6: MVA tight nonTrig, 7: MVA medium Trig, 8: MVA tight Trig, -1: noID
-        electron2id = cms.int32(0),
+        electron1id = cms.int32(1), # 0: veto, 1: loose, 2: medium, 3: tight, 4: HEEP, 5: MVA medium nonTrig, 6: MVA tight nonTrig, 7: MVA medium Trig, 8: MVA tight Trig, -1: noID
+        electron2id = cms.int32(1),
         electron1pt = cms.double(10.),
         electron2pt = cms.double(10.),
     ),
@@ -510,7 +510,7 @@ process.ntuple = cms.EDAnalyzer('Dibottom',
     writeNPhotons = cms.int32(0),
     writeNJets = cms.int32(4),
     histFile = cms.string('%s/src/Analysis/ALPHA/data/HistList_bb.dat' % os.environ['CMSSW_BASE']),
-    verbose  = cms.bool(True),
+    verbose  = cms.bool(False),
 )
 
 
