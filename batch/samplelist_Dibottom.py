@@ -117,7 +117,7 @@ samplelists = [
 
 ### Diboson
 'WW_TuneCUETP8M1_13TeV-pythia8-v1', 
-#'WZ_TuneCUETP8M1_13TeV-pythia8-v1',
+'WZ_TuneCUETP8M1_13TeV-pythia8-v1',
 #'ZZ_TuneCUETP8M1_13TeV-pythia8-v1',
 
 ### ZJetsToNuNu - PtZ binned
